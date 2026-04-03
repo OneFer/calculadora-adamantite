@@ -26,7 +26,7 @@
     <script type="text/babel">
         const { useState, useMemo } = React;
 
-        // Ícones SVG Inline para evitar erros de biblioteca externa
+        // Ícones SVG Inline - Corrigidos com React.Fragment para evitar SyntaxError
         const Icon = ({ name, className = "w-4 h-4" }) => {
             const icons = {
                 Settings2: <path d="M20 7h-9m-4 0H4m16 5h-4m-4 0H4m16 5h-7m-4 0H4m12-10V5m0 4V5m-9 4V5m9 10v-2m-9 10v-2" />,
@@ -40,7 +40,8 @@
                 CheckCircle2: <React.Fragment><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></React.Fragment>,
                 RefreshCcw: <React.Fragment><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></React.Fragment>,
                 Check: <path d="m20 6-11 11-5-5" />,
-                RotateCcw: <React.Fragment><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></React.Fragment>
+                RotateCcw: <React.Fragment><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></React.Fragment>,
+                Box: <React.Fragment><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></React.Fragment>
             };
             return (
                 <svg 
@@ -60,249 +61,40 @@
 
         // --- CONFIGURAÇÃO DE RECEITAS ---
         const RECIPES = {
-            'arcane_ingot': {
-                name: 'Arcane Ingot',
-                tier: 'Arcane',
-                inputs: [
-                    { id: 'arcane_essence', qty: 500 },
-                    { id: 'iron_ingot', qty: 1 },
-                    { id: 'thermal_monitor_durability', qty: 1 }
-                ]
-            },
-            'arcane_block': {
-                name: 'Arcane Block',
-                tier: 'Arcane',
-                inputs: [{ id: 'arcane_ingot', qty: 9 }]
-            },
-            'powdered_arcane': {
-                name: 'Powdered Arcane',
-                multiplier: 2,
-                useArcaneReturn: true, 
-                inputs: [{ id: 'arcane_ingot', qty: 1 }]
-            },
-            'ancestral_ingot': {
-                name: 'Ancestral Ingot',
-                tier: 'Ancestral',
-                chance: 0.77,
-                inputs: [
-                    { id: 'arcane_ingot', qty: 1 },
-                    { id: 'lava', qty: 2000 },
-                    { id: 'infernal_spirit', qty: 4 },
-                    { id: 'arcane_spirit', qty: 4 },
-                    { id: 'earthen_spirit', qty: 4 }
-                ]
-            },
-            'ancestral_block': {
-                name: 'Ancestral Block',
-                tier: 'Ancestral',
-                inputs: [{ id: 'ancestral_ingot', qty: 9 }]
-            },
-            'ascendant_block': {
-                name: 'Ascendant Block',
-                tier: 'Ascendant',
-                inputs: [
-                    { id: 'ancestral_block', qty: 1 },
-                    { id: 'soul_stained_steel_plating', qty: 24 },
-                    { id: 'eldritch_spirit', qty: 24 },
-                    { id: 'arcane_spirit', qty: 24 },
-                    { id: 'sagrado_spirit', qty: 16 },
-                    { id: 'earthen_spirit', qty: 16 },
-                    { id: 'infernal_spirit', qty: 16 },
-                    { id: 'void_salt', qty: 16 },
-                    { id: 'null_void', qty: 16 },
-                    { id: 'blaze_powder', qty: 24 },
-                    { id: 'null_slate', qty: 16 }
-                ]
-            },
-            'ascendant_ingot': {
-                name: 'Ascendant Ingot',
-                tier: 'Ascendant',
-                inputs: [{ id: 'ascendant_block', qty: 1/9 }]
-            },
-            'esoteric_ingot': {
-                name: 'Esoteric Ingot',
-                tier: 'Esoteric',
-                inputs: [
-                    { id: 'heated_esoteric_metal', qty: 1 },
-                    { id: 'arcane_essence', qty: 500 }
-                ]
-            },
-            'esoteric_block': {
-                name: 'Esoteric Block',
-                tier: 'Esoteric',
-                inputs: [{ id: 'esoteric_ingot', qty: 9 }]
-            },
-            'heated_esoteric_metal': {
-                name: 'Heated Esoteric Metal',
-                inputs: [
-                    { id: 'polished_esoteric_metal', qty: 1 },
-                    { id: 'thermal_monitor_durability', qty: 1 }
-                ]
-            },
-            'polished_esoteric_metal': {
-                name: 'Polished Esoteric Metal',
-                inputs: [
-                    { id: 'rough_esoteric_metal', qty: 1 },
-                    { id: 'ascendant_sandpaper_durability', qty: 1, optional: 'auto_polish' }
-                ]
-            },
-            'rough_esoteric_metal': {
-                name: 'Rough Esoteric Metal',
-                inputs: [{ id: 'esoteric_cast', qty: 1 }]
-            },
-            'esoteric_cast': {
-                name: 'Esoteric Cast',
-                inputs: [
-                    { id: 'golden_brilliance', qty: 1 },
-                    { id: 'arcane_essence', qty: 500 }
-                ]
-            },
-            'golden_brilliance': {
-                name: 'Golden Brilliance',
-                inputs: [
-                    { id: 'golden_ascendance_plate', qty: 1 },
-                    { id: 'experience_block', qty: 4 }
-                ]
-            },
-            'golden_ascendance_plate': {
-                name: 'Golden Ascendance Plate',
-                inputs: [{ id: 'golden_ascendance_block', qty: 1/9 }]
-            },
-            'golden_ascendance_block': {
-                name: 'Golden Ascendance Block',
-                inputs: [
-                    { id: 'ascendant_block', qty: 1 },
-                    { id: 'gold_block', qty: 8 }
-                ]
-            },
-            'mithril_ingot': {
-                name: 'Mithril Ingot',
-                tier: 'Mithril',
-                chance: 0.80,
-                recycleId: 'rough_mithril_metal',
-                recycleChance: 0.20,
-                inputs: [
-                    { id: 'polished_mithril_metal', qty: 1 },
-                    { id: 'lava', qty: 3000 },
-                    { id: 'pure_vitae', qty: 1500 }
-                ]
-            },
-            'mithril_block': {
-                name: 'Mithril Block',
-                tier: 'Mithril',
-                inputs: [{ id: 'mithril_ingot', qty: 9 }]
-            },
-            'polished_mithril_metal': {
-                name: 'Polished Mithril Metal',
-                inputs: [
-                    { id: 'rough_mithril_metal', qty: 1 },
-                    { id: 'ascendant_sandpaper_durability', qty: 1, optional: 'auto_polish' }
-                ]
-            },
-            'rough_mithril_metal': {
-                name: 'Rough Mithril Metal',
-                inputs: [
-                    { id: 'mithril_matter', qty: 1 },
-                    { id: 'pure_vitae', qty: 10 }
-                ]
-            },
-            'mithril_matter': {
-                name: 'Mithril Matter',
-                inputs: [
-                    { id: 'mithril_alloy', qty: 1 },
-                    { id: 'harmonic_essence', qty: 500 }
-                ]
-            },
-            'mithril_alloy': {
-                name: 'Mithril Alloy',
-                inputs: [
-                    { id: 'esoteric_ingot', qty: 1 },
-                    { id: 'netherite_ingot', qty: 1 }
-                ]
-            },
-            'netherite_ingot': {
-                name: 'Netherite Ingot',
-                inputs: [
-                    { id: 'gold_ingot', qty: 4 },
-                    { id: 'netherite_scrap', qty: 4 }
-                ]
-            },
-            'harmonic_essence': {
-                name: 'Harmonic Essence',
-                multiplier: 1000,
-                inputs: [
-                    { id: 'thermal_monitor_durability', qty: 1 },
-                    { id: 'pure_vitae', qty: 500 },
-                    { id: 'cursed_vitae', qty: 500 }
-                ]
-            },
-            'pure_vitae': {
-                name: 'Pure Vitae',
-                multiplier: 1000,
-                inputs: [
-                    { id: 'powdered_arcane', qty: 8 },
-                    { id: 'condensed_runic_sap', qty: 1 }
-                ]
-            },
-            'cursed_vitae': {
-                name: 'Cursed Vitae',
-                multiplier: 1000,
-                inputs: [
-                    { id: 'powdered_arcane', qty: 8 },
-                    { id: 'condensed_cursed_sap', qty: 1 }
-                ]
-            },
-            'soul_stained_steel_plating': {
-                name: 'Soul Stained Steel Plating',
-                multiplier: 2,
-                inputs: [
-                    { id: 'soul_stained_steel_ingot', qty: 1 },
-                    { id: 'soul_stained_steel_nugget', qty: 4 }
-                ]
-            },
-            'soul_stained_steel_ingot': {
-                name: 'Soul Stained Steel Ingot',
-                inputs: [
-                    { id: 'processed_soulstone', qty: 4 },
-                    { id: 'wicked_spirit', qty: 3 },
-                    { id: 'arcane_spirit', qty: 1 },
-                    { id: 'earthen_spirit', qty: 1 }
-                ]
-            },
-            'soul_stained_steel_nugget': {
-                name: 'Soul Stained Steel Nugget',
-                inputs: [{ id: 'soul_stained_steel_ingot', qty: 1/9 }]
-            },
-            'thermal_monitor_durability': {
-                name: 'Thermal Monitor (Uso)',
-                inputs: [{ id: 'thermal_monitor_mechanism', qty: 1/256 }]
-            },
-            'thermal_monitor_mechanism': {
-                name: 'Thermal Monitor Mechanism',
-                inputs: [
-                    { id: 'brass_ingot', qty: 5 },
-                    { id: 'obsidian', qty: 5 },
-                    { id: 'redstone', qty: 5 }
-                ]
-            },
-            'ascendant_sandpaper_durability': {
-                name: 'Sandpaper (Uso)',
-                inputs: [{ id: 'ascendant_sandpaper', qty: 1/16 }]
-            },
-            'ascendant_sandpaper': {
-                name: 'Ascendant Sandpaper',
-                inputs: [
-                    { id: 'sand', qty: 1 },
-                    { id: 'paper', qty: 1 },
-                    { id: 'powdered_ascendant', qty: 1 }
-                ]
-            },
-            'powdered_ascendant': {
-                name: 'Powdered Ascendant',
-                multiplier: 2,
-                chance: 0.25,
-                inputs: [{ id: 'ascendant_ingot', qty: 1 }]
-            }
+            'arcane_ingot': { name: 'Arcane Ingot', tier: 'Arcane', inputs: [{ id: 'arcane_essence', qty: 500 }, { id: 'iron_ingot', qty: 1 }, { id: 'thermal_monitor_durability', qty: 1 }] },
+            'arcane_block': { name: 'Arcane Block', tier: 'Arcane', inputs: [{ id: 'arcane_ingot', qty: 9 }] },
+            'powdered_arcane': { name: 'Powdered Arcane', multiplier: 2, useArcaneReturn: true, inputs: [{ id: 'arcane_ingot', qty: 1 }] },
+            'ancestral_ingot': { name: 'Ancestral Ingot', tier: 'Ancestral', chance: 0.77, inputs: [{ id: 'arcane_ingot', qty: 1 }, { id: 'lava', qty: 2000 }, { id: 'infernal_spirit', qty: 4 }, { id: 'arcane_spirit', qty: 4 }, { id: 'earthen_spirit', qty: 4 }] },
+            'ancestral_block': { name: 'Ancestral Block', tier: 'Ancestral', inputs: [{ id: 'ancestral_ingot', qty: 9 }] },
+            'ascendant_block': { name: 'Ascendant Block', tier: 'Ascendant', inputs: [{ id: 'ancestral_block', qty: 1 }, { id: 'soul_stained_steel_plating', qty: 24 }, { id: 'eldritch_spirit', qty: 24 }, { id: 'arcane_spirit', qty: 24 }, { id: 'sagrado_spirit', qty: 16 }, { id: 'earthen_spirit', qty: 16 }, { id: 'infernal_spirit', qty: 16 }, { id: 'void_salt', qty: 16 }, { id: 'null_void', qty: 16 }, { id: 'blaze_powder', qty: 24 }, { id: 'null_slate', qty: 16 }] },
+            'ascendant_ingot': { name: 'Ascendant Ingot', tier: 'Ascendant', inputs: [{ id: 'ascendant_block', qty: 1/9 }] },
+            'esoteric_ingot': { name: 'Esoteric Ingot', tier: 'Esoteric', inputs: [{ id: 'heated_esoteric_metal', qty: 1 }, { id: 'arcane_essence', qty: 500 }] },
+            'esoteric_block': { name: 'Esoteric Block', tier: 'Esoteric', inputs: [{ id: 'esoteric_ingot', qty: 9 }] },
+            'heated_esoteric_metal': { name: 'Heated Esoteric Metal', inputs: [{ id: 'polished_esoteric_metal', qty: 1 }, { id: 'thermal_monitor_durability', qty: 1 }] },
+            'polished_esoteric_metal': { name: 'Polished Esoteric Metal', inputs: [{ id: 'rough_esoteric_metal', qty: 1 }, { id: 'ascendant_sandpaper_durability', qty: 1, optional: 'auto_polish' }] },
+            'rough_esoteric_metal': { name: 'Rough Esoteric Metal', inputs: [{ id: 'esoteric_cast', qty: 1 }] },
+            'esoteric_cast': { name: 'Esoteric Cast', inputs: [{ id: 'golden_brilliance', qty: 1 }, { id: 'arcane_essence', qty: 500 }] },
+            'golden_brilliance': { name: 'Golden Brilliance', inputs: [{ id: 'golden_ascendance_plate', qty: 1 }, { id: 'experience_block', qty: 4 }] },
+            'golden_ascendance_plate': { name: 'Golden Ascendance Plate', inputs: [{ id: 'golden_ascendance_block', qty: 1/9 }] },
+            'golden_ascendance_block': { name: 'Golden Ascendance Block', inputs: [{ id: 'ascendant_block', qty: 1 }, { id: 'gold_block', qty: 8 }] },
+            'mithril_ingot': { name: 'Mithril Ingot', tier: 'Mithril', chance: 0.80, recycleId: 'rough_mithril_metal', recycleChance: 0.20, inputs: [{ id: 'polished_mithril_metal', qty: 1 }, { id: 'lava', qty: 3000 }, { id: 'pure_vitae', qty: 1500 }] },
+            'mithril_block': { name: 'Mithril Block', tier: 'Mithril', inputs: [{ id: 'mithril_ingot', qty: 9 }] },
+            'polished_mithril_metal': { name: 'Polished Mithril Metal', inputs: [{ id: 'rough_mithril_metal', qty: 1 }, { id: 'ascendant_sandpaper_durability', qty: 1, optional: 'auto_polish' }] },
+            'rough_mithril_metal': { name: 'Rough Mithril Metal', inputs: [{ id: 'mithril_matter', qty: 1 }, { id: 'pure_vitae', qty: 10 }] },
+            'mithril_matter': { name: 'Mithril Matter', inputs: [{ id: 'mithril_alloy', qty: 1 }, { id: 'harmonic_essence', qty: 500 }] },
+            'mithril_alloy': { name: 'Mithril Alloy', inputs: [{ id: 'esoteric_ingot', qty: 1 }, { id: 'netherite_ingot', qty: 1 }] },
+            'netherite_ingot': { name: 'Netherite Ingot', inputs: [{ id: 'gold_ingot', qty: 4 }, { id: 'netherite_scrap', qty: 4 }] },
+            'harmonic_essence': { name: 'Harmonic Essence', multiplier: 1000, inputs: [{ id: 'thermal_monitor_durability', qty: 1 }, { id: 'pure_vitae', qty: 500 }, { id: 'cursed_vitae', qty: 500 }] },
+            'pure_vitae': { name: 'Pure Vitae', multiplier: 1000, inputs: [{ id: 'powdered_arcane', qty: 8 }, { id: 'condensed_runic_sap', qty: 1 }] },
+            'cursed_vitae': { name: 'Cursed Vitae', multiplier: 1000, inputs: [{ id: 'powdered_arcane', qty: 8 }, { id: 'condensed_cursed_sap', qty: 1 }] },
+            'soul_stained_steel_plating': { name: 'Soul Stained Steel Plating', multiplier: 2, inputs: [{ id: 'soul_stained_steel_ingot', qty: 1 }, { id: 'soul_stained_steel_nugget', qty: 4 }] },
+            'soul_stained_steel_ingot': { name: 'Soul Stained Steel Ingot', inputs: [{ id: 'processed_soulstone', qty: 4 }, { id: 'wicked_spirit', qty: 3 }, { id: 'arcane_spirit', qty: 1 }, { id: 'earthen_spirit', qty: 1 }] },
+            'soul_stained_steel_nugget': { name: 'Soul Stained Steel Nugget', inputs: [{ id: 'soul_stained_steel_ingot', qty: 1/9 }] },
+            'thermal_monitor_durability': { name: 'Thermal Monitor (Uso)', inputs: [{ id: 'thermal_monitor_mechanism', qty: 1/256 }] },
+            'thermal_monitor_mechanism': { name: 'Thermal Monitor Mechanism', inputs: [{ id: 'brass_ingot', qty: 5 }, { id: 'obsidian', qty: 5 }, { id: 'redstone', qty: 5 }] },
+            'ascendant_sandpaper_durability': { name: 'Sandpaper (Uso)', inputs: [{ id: 'ascendant_sandpaper', qty: 1/16 }] },
+            'ascendant_sandpaper': { name: 'Ascendant Sandpaper', inputs: [{ id: 'sand', qty: 1 }, { id: 'paper', qty: 1 }, { id: 'powdered_ascendant', qty: 1 }] },
+            'powdered_ascendant': { name: 'Powdered Ascendant', multiplier: 2, chance: 0.25, inputs: [{ id: 'ascendant_ingot', qty: 1 }] }
         };
 
         const ITEMS_DATA = {
@@ -415,8 +207,20 @@
                 return { items: results, stockUsed };
             }, [targetItem, quantity, useAutoPolish, ancestralChance, arcaneReturnChance, inventory, completedItems]);
 
-            const rawResources = Object.entries(totals.items).filter(([_, d]) => d.isResource);
-            const intermediateItems = Object.entries(totals.items).filter(([id, d]) => !d.isResource && id !== targetItem);
+            // Filtragem e Ordenação de maior para menor (baseado no net que falta coletar)
+            const rawResources = useMemo(() => 
+                Object.entries(totals.items)
+                    .filter(([_, d]) => d.isResource)
+                    .sort((a, b) => b[1].net - a[1].net),
+                [totals.items]
+            );
+
+            const intermediateItems = useMemo(() => 
+                Object.entries(totals.items)
+                    .filter(([id, d]) => !d.isResource && id !== targetItem)
+                    .sort((a, b) => b[1].net - a[1].net),
+                [totals.items, targetItem]
+            );
 
             const ItemCard = ({ id, data, isInter }) => {
                 const isDone = data.net <= 0.0001;
@@ -432,11 +236,13 @@
                                 <button onClick={() => toggleComplete(id)} className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all border-2 ${isManualDone ? 'bg-green-600 border-green-600 text-white' : 'border-neutral-700 hover:border-purple-500 text-transparent hover:text-purple-500'}`}><Icon name="Check" className="w-4 h-4" /></button>
                                 <div className="flex flex-col">
                                     <span className={`text-sm font-black flex items-center gap-2 ${colorClass}`}>{itemName}{isDone && <Icon name="CheckCircle2" className="w-4 h-4 text-green-500 animate-in zoom-in duration-300" />}</span>
-                                    <span className="text-[9px] text-neutral-600 font-bold uppercase tracking-tighter">Total: {data.gross.toFixed(1)} {unit}</span>
+                                    <span className="text-[9px] text-neutral-600 font-bold uppercase tracking-tighter">Total Requerido: {data.gross.toFixed(1)} {unit}</span>
                                 </div>
                             </div>
                             <div className="text-right">
-                                <div className={`text-lg font-mono font-black ${isDone ? 'text-green-500' : 'text-white'}`}>{isDone ? 'PRONTO' : (data.net > 100 ? Math.ceil(data.net).toLocaleString() : data.net.toFixed(1))} {!isDone && <span className="ml-1 text-[10px] text-neutral-500 uppercase">{unit}</span>}</div>
+                                <div className={`text-lg font-mono font-black ${isDone ? 'text-green-500' : 'text-white'}`}>
+                                    {isDone ? 'PRONTO' : (data.net > 100 ? Math.ceil(data.net).toLocaleString() : data.net.toFixed(1))} {!isDone && <span className="ml-1 text-[10px] text-neutral-500 uppercase">{unit}</span>}
+                                </div>
                             </div>
                         </div>
                         <div className="flex items-center gap-2 bg-neutral-950/50 p-2 rounded-xl border border-neutral-800/50">
@@ -512,11 +318,15 @@
                                 <div className="lg:col-span-8 space-y-8">
                                     <section className="bg-neutral-900 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
                                         <div className="p-6 border-b border-neutral-800 bg-neutral-900/50 flex gap-3 items-center"><Icon name="Database" className="w-5 h-5 text-purple-500" /><h2 className="text-sm font-black uppercase text-white tracking-widest">Recursos Base</h2></div>
-                                        <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">{rawResources.sort().map(([id, data]) => <ItemCard key={id} id={id} data={data} isInter={false} />)}</div>
+                                        <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            {rawResources.map(([id, data]) => <ItemCard key={id} id={id} data={data} isInter={false} />)}
+                                        </div>
                                     </section>
                                     <section className="bg-neutral-900 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
                                         <div className="p-6 border-b border-neutral-800 bg-neutral-900/50 flex gap-3 items-center"><Icon name="Layers" className="w-5 h-5 text-indigo-500" /><h2 className="text-sm font-black uppercase text-white tracking-widest">Intermediários</h2></div>
-                                        <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">{intermediateItems.sort().map(([id, data]) => <ItemCard key={id} id={id} data={data} isInter={true} />)}</div>
+                                        <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            {intermediateItems.map(([id, data]) => <ItemCard key={id} id={id} data={data} isInter={true} />)}
+                                        </div>
                                     </section>
                                 </div>
                             </div>
