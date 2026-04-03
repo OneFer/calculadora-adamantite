@@ -3,22 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tenebris Fabricator - Calculadora de Crafting</title>
-    <!-- React & Babel -->
+    <title>Tenebris Fabricator - Smithing & Arcane Update</title>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #e5e5e5; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f1115; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #444; }
-        input[type="range"] { cursor: pointer; }
+        body { font-family: 'Inter', sans-serif; background-color: #09090b; color: #d4d4d8; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+        input[type="range"] { accent-color: #8b5cf6; }
     </style>
 </head>
 <body>
@@ -26,84 +22,131 @@
     <script type="text/babel">
         const { useState, useMemo } = React;
 
-        // Ícones SVG Inline - Corrigidos com React.Fragment para evitar SyntaxError
-        const Icon = ({ name, className = "w-4 h-4" }) => {
+        const Icon = ({ name, className = "w-3.5 h-3.5" }) => {
             const icons = {
                 Settings2: <path d="M20 7h-9m-4 0H4m16 5h-4m-4 0H4m16 5h-7m-4 0H4m12-10V5m0 4V5m-9 4V5m9 10v-2m-9 10v-2" />,
                 Database: <path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm0 7h18m-18 5h18" />,
-                Hammer: <path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0-.83-.83-.83-2.17 0-3L12 9l3 3Z" />,
-                Info: <React.Fragment><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></React.Fragment>,
                 Layers: <React.Fragment><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.1 6.1a2 2 0 0 0 0 3.8l9.07 3.91a2 2 0 0 0 1.66 0l9.07-3.91a2 2 0 0 0 0-3.8Z"/><path d="m2.1 14.74 8.94 3.86a2 2 0 0 0 1.92 0l8.94-3.86"/><path d="m2.1 10.32 8.94 3.86a2 2 0 0 0 1.92 0l8.94-3.86"/></React.Fragment>,
-                Package: <React.Fragment><path d="M16.5 9.4 7.5 4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></React.Fragment>,
-                ArrowRight: <React.Fragment><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></React.Fragment>,
-                Calculator: <React.Fragment><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></React.Fragment>,
-                CheckCircle2: <React.Fragment><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></React.Fragment>,
-                RefreshCcw: <React.Fragment><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></React.Fragment>,
+                Calculator: <React.Fragment><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/></React.Fragment>,
+                RefreshCcw: <React.Fragment><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></React.Fragment>,
                 Check: <path d="m20 6-11 11-5-5" />,
-                RotateCcw: <React.Fragment><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></React.Fragment>,
-                Box: <React.Fragment><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></React.Fragment>
+                Copy: <React.Fragment><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></React.Fragment>,
+                Plus: <React.Fragment><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></React.Fragment>
             };
             return (
-                <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    className={className}
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
                     {icons[name] || null}
                 </svg>
             );
         };
 
-        // --- CONFIGURAÇÃO DE RECEITAS ---
         const RECIPES = {
+            // ARCANE
             'arcane_ingot': { name: 'Arcane Ingot', tier: 'Arcane', inputs: [{ id: 'arcane_essence', qty: 500 }, { id: 'iron_ingot', qty: 1 }, { id: 'thermal_monitor_durability', qty: 1 }] },
             'arcane_block': { name: 'Arcane Block', tier: 'Arcane', inputs: [{ id: 'arcane_ingot', qty: 9 }] },
-            'powdered_arcane': { name: 'Powdered Arcane', multiplier: 2, useArcaneReturn: true, inputs: [{ id: 'arcane_ingot', qty: 1 }] },
+            'arcane_nugget': { name: 'Arcane Nugget', yield: 9, inputs: [{ id: 'arcane_ingot', qty: 1 }] },
+            'arcane_rune': { name: 'Arcane Rune', inputs: [{ id: 'arcane_nugget', qty: 6 }] },
+            'arcane_sheet': { name: 'Arcane Sheet', inputs: [{ id: 'powdered_arcane', qty: 1 }, { id: 'lava', qty: 500 }] },
+            'powdered_arcane': { name: 'Powdered Arcane', yield: 2, useArcaneReturn: true, inputs: [{ id: 'arcane_ingot', qty: 1 }] },
+            'tainted_rock_tablet': { name: 'Tainted Rock Tablet', yield: 2, inputs: [{ id: 'aerial_spirit', qty: 8 }, { id: 'aqueous_spirit', qty: 8 }, { id: 'earthen_spirit', qty: 8 }, { id: 'infernal_spirit', qty: 8 }, { id: 'eldritch_spirit', qty: 2 }, { id: 'processed_soulstone', qty: 8 }] },
+            
+            // ANCESTRAL
             'ancestral_ingot': { name: 'Ancestral Ingot', tier: 'Ancestral', chance: 0.77, inputs: [{ id: 'arcane_ingot', qty: 1 }, { id: 'lava', qty: 2000 }, { id: 'infernal_spirit', qty: 4 }, { id: 'arcane_spirit', qty: 4 }, { id: 'earthen_spirit', qty: 4 }] },
             'ancestral_block': { name: 'Ancestral Block', tier: 'Ancestral', inputs: [{ id: 'ancestral_ingot', qty: 9 }] },
+
+            // ASCENDANT
             'ascendant_block': { name: 'Ascendant Block', tier: 'Ascendant', inputs: [{ id: 'ancestral_block', qty: 1 }, { id: 'soul_stained_steel_plating', qty: 24 }, { id: 'eldritch_spirit', qty: 24 }, { id: 'arcane_spirit', qty: 24 }, { id: 'sagrado_spirit', qty: 16 }, { id: 'earthen_spirit', qty: 16 }, { id: 'infernal_spirit', qty: 16 }, { id: 'void_salt', qty: 16 }, { id: 'null_void', qty: 16 }, { id: 'blaze_powder', qty: 24 }, { id: 'null_slate', qty: 16 }] },
-            'ascendant_ingot': { name: 'Ascendant Ingot', tier: 'Ascendant', inputs: [{ id: 'ascendant_block', qty: 1/9 }] },
+            'ascendant_ingot': { name: 'Ascendant Ingot', tier: 'Ascendant', yield: 9, inputs: [{ id: 'ascendant_block', qty: 1 }] },
+            'powdered_ascendant': { name: 'Powdered Ascendant', yield: 2, chance: 0.25, inputs: [{ id: 'ascendant_ingot', qty: 1 }] },
+            
+            // ESOTERIC
             'esoteric_ingot': { name: 'Esoteric Ingot', tier: 'Esoteric', inputs: [{ id: 'heated_esoteric_metal', qty: 1 }, { id: 'arcane_essence', qty: 500 }] },
             'esoteric_block': { name: 'Esoteric Block', tier: 'Esoteric', inputs: [{ id: 'esoteric_ingot', qty: 9 }] },
             'heated_esoteric_metal': { name: 'Heated Esoteric Metal', inputs: [{ id: 'polished_esoteric_metal', qty: 1 }, { id: 'thermal_monitor_durability', qty: 1 }] },
-            'polished_esoteric_metal': { name: 'Polished Esoteric Metal', inputs: [{ id: 'rough_esoteric_metal', qty: 1 }, { id: 'ascendant_sandpaper_durability', qty: 1, optional: 'auto_polish' }] },
+            'polished_esoteric_metal': { name: 'Polished Esoteric Metal', inputs: [{ id: 'rough_esoteric_metal', qty: 1 }, { id: 'ascendant_sandpaper_durability', qty: 1 }] },
             'rough_esoteric_metal': { name: 'Rough Esoteric Metal', inputs: [{ id: 'esoteric_cast', qty: 1 }] },
             'esoteric_cast': { name: 'Esoteric Cast', inputs: [{ id: 'golden_brilliance', qty: 1 }, { id: 'arcane_essence', qty: 500 }] },
             'golden_brilliance': { name: 'Golden Brilliance', inputs: [{ id: 'golden_ascendance_plate', qty: 1 }, { id: 'experience_block', qty: 4 }] },
-            'golden_ascendance_plate': { name: 'Golden Ascendance Plate', inputs: [{ id: 'golden_ascendance_block', qty: 1/9 }] },
+            'golden_ascendance_plate': { name: 'Golden Ascendance Plate', yield: 9, inputs: [{ id: 'golden_ascendance_block', qty: 1 }] },
             'golden_ascendance_block': { name: 'Golden Ascendance Block', inputs: [{ id: 'ascendant_block', qty: 1 }, { id: 'gold_block', qty: 8 }] },
+            'powdered_esoteric': { name: 'Powdered Esoteric', yield: 2, useArcaneReturn: true, inputs: [{ id: 'esoteric_ingot', qty: 1 }] },
+            
+            // MITHRIL
             'mithril_ingot': { name: 'Mithril Ingot', tier: 'Mithril', chance: 0.80, recycleId: 'rough_mithril_metal', recycleChance: 0.20, inputs: [{ id: 'polished_mithril_metal', qty: 1 }, { id: 'lava', qty: 3000 }, { id: 'pure_vitae', qty: 1500 }] },
             'mithril_block': { name: 'Mithril Block', tier: 'Mithril', inputs: [{ id: 'mithril_ingot', qty: 9 }] },
-            'polished_mithril_metal': { name: 'Polished Mithril Metal', inputs: [{ id: 'rough_mithril_metal', qty: 1 }, { id: 'ascendant_sandpaper_durability', qty: 1, optional: 'auto_polish' }] },
+            'mithril_nugget': { name: 'Mithril Nugget', yield: 9, inputs: [{ id: 'mithril_ingot', qty: 1 }] },
+            'mithril_sheet': { name: 'Mithril Sheet', inputs: [{ id: 'lava', qty: 500 }, { id: 'powdered_mithril', qty: 1 }] },
+            'polished_mithril_metal': { name: 'Polished Mithril Metal', inputs: [{ id: 'rough_mithril_metal', qty: 1 }, { id: 'ascendant_sandpaper_durability', qty: 1 }] },
             'rough_mithril_metal': { name: 'Rough Mithril Metal', inputs: [{ id: 'mithril_matter', qty: 1 }, { id: 'pure_vitae', qty: 10 }] },
             'mithril_matter': { name: 'Mithril Matter', inputs: [{ id: 'mithril_alloy', qty: 1 }, { id: 'harmonic_essence', qty: 500 }] },
             'mithril_alloy': { name: 'Mithril Alloy', inputs: [{ id: 'esoteric_ingot', qty: 1 }, { id: 'netherite_ingot', qty: 1 }] },
+            'powdered_mithril': { name: 'Powdered Mithril', yield: 2, useArcaneReturn: true, inputs: [{ id: 'mithril_ingot', qty: 1 }] },
+            
+            // ADAMANTITE
+            'adamantite_ingot': { name: 'Adamantite Ingot', tier: 'Adamantite', inputs: [{ id: 'adamantite_shard', qty: 4 }, { id: 'sentient_obelisk_durability', qty: 1 }, { id: 'arcane_essence', qty: 500 }] },
+            'adamantite_block': { name: 'Adamantite Block', tier: 'Adamantite', inputs: [{ id: 'adamantite_ingot', qty: 9 }] },
+            'adamantite_shard': { name: 'Adamantite Shard', yield: 4, inputs: [{ id: 'adamantite_crystal', qty: 1 }] },
+            'adamantite_crystal': { name: 'Adamantite Crystal', inputs: [{ id: 'compacted_adamantite', qty: 4 }] },
+            'compacted_adamantite': { name: 'Compacted Adamantite', yield: 4, inputs: [{ id: 'adamantite_paste', qty: 1 }] },
+            'adamantite_paste': { name: 'Adamantite Paste', inputs: [{ id: 'powdered_mithril', qty: 1 }, { id: 'harmonic_essence', qty: 500 }, { id: 'arcane_essence', qty: 500 }] },
+            'adamantite_cell': { name: 'Adamantite Cell', tier: 'Adamantite', inputs: [{ id: 'adamantite_shard', qty: 4 }, { id: 'mana_upgrade_orb', qty: 4 }, { id: 'ethereal_conduit', qty: 1 }] },
+            
+            // SMITHING TEMPLATES
+            'arcane_template': { 
+                name: 'Arcane Template', tier: 'Templates', 
+                inputs: [{ id: 'arcane_ingot', qty: 4 }, { id: 'arcane_block', qty: 1 }, { id: 'arcane_rune', qty: 3 }, { id: 'tainted_rock_tablet', qty: 1 }],
+                cheapInputs: [{ id: 'arcane_block', qty: 1 }, { id: 'netherrack', qty: 4 }, { id: 'arcane_rune', qty: 4 }, { id: 'arcane_sheet', qty: 4 }]
+            },
+            'ancestral_template': { name: 'Ancestral Template', tier: 'Templates', inputs: [{ id: 'diamond', qty: 7 }, { id: 'ancestral_block', qty: 1 }] },
+            'ascendant_template': { name: 'Ascendant Template', tier: 'Templates', inputs: [{ id: 'diamond', qty: 7 }, { id: 'ascendant_block', qty: 1 }] },
+            'esoteric_template': { name: 'Esoteric Template', tier: 'Templates', inputs: [{ id: 'diamond', qty: 7 }, { id: 'esoteric_block', qty: 1 }] },
+            'mithril_template': { name: 'Mithril Template', tier: 'Templates', inputs: [{ id: 'diamond', qty: 7 }, { id: 'mithril_block', qty: 1 }] },
+            'adamantite_template': { name: 'Adamantite Template', tier: 'Templates', inputs: [{ id: 'diamond', qty: 7 }, { id: 'adamantite_block', qty: 1 }] },
+            
+            // OBELISK & CORES
+            'luminous_core': { name: 'Luminous Core', tier: 'Special', inputs: [{ id: 'aerial_spirit', qty: 16 }, { id: 'aqueous_spirit', qty: 16 }, { id: 'sagrado_spirit', qty: 16 }, { id: 'arcane_spirit', qty: 16 }, { id: 'adamantite_shard', qty: 1 }, { id: 'golden_brilliance', qty: 1 }, { id: 'harmonic_ingot', qty: 1 }, { id: 'oblivion_core', qty: 1 }] },
+            'harmonic_ingot': { name: 'Harmonic Ingot', inputs: [{ id: 'blaze_powder', qty: 2 }, { id: 'harmonic_essence', qty: 30 }, { id: 'corrupted_fragment', qty: 1 }] },
+            'corrupted_fragment': { name: 'Corrupted Fragment', inputs: [{ id: 'etherium_core', qty: 1 }] },
+            'etherium_core': { name: 'Etherium Core', inputs: [{ id: 'mithril_ingot', qty: 4 }, { id: 'netherite_scrap', qty: 4 }, { id: 'arcane_pebble', qty: 1 }] },
+            'ethereal_conduit': { name: 'Ethereal Conduit', inputs: [{ id: 'ethereal_catalyst', qty: 1 }] },
+            'ethereal_catalyst': { name: 'Ethereal Catalyst', inputs: [{ id: 'adamantite_shard', qty: 3 }, { id: 'arcane_pebble', qty: 3 }, { id: 'mithril_nugget', qty: 3 }, { id: 'mithril_sheet', qty: 1 }] },
+            'ethereal_husk': { name: 'Ethereal Husk', yield: 2, inputs: [{ id: 'mithril_ingot', qty: 1 }, { id: 'thermal_monitor_durability', qty: 1 }, { id: 'oblivion_core', qty: 1 }] },
+            'ethereal_core': { name: 'Ethereal Core', inputs: [{ id: 'harmonic_essence', qty: 500 }, { id: 'arcane_pebble', qty: 1 }, { id: 'ethereal_husk', qty: 1 }] },
+            'sentient_obelisk_durability': { name: 'Obelisk Usage', yield: 1024, inputs: [{ id: 'sentient_obelisk', qty: 1 }] },
+            'sentient_obelisk': { name: 'Sentient Obelisk', inputs: [{ id: 'charged_core', qty: 1 }, { id: 'adamantite_shard', qty: 1 }, { id: 'adamantite_cell', qty: 1 }, { id: 'harmonic_ingot', qty: 1 }, { id: 'luminous_core', qty: 1 }] },
+            'charged_core': { name: 'Charged Core', yield: 512, inputs: [{ id: 'ethereal_core', qty: 1 }] },
+            'oblivion_core': { name: 'Oblivion Core', inputs: [{ id: 'aerial_spirit', qty: 16 }, { id: 'aqueous_spirit', qty: 16 }, { id: 'sagrado_spirit', qty: 16 }, { id: 'eldritch_spirit', qty: 16 }, { id: 'processed_soulstone', qty: 2 }, { id: 'hallowed_gold', qty: 4 }, { id: 'powdered_esoteric', qty: 2 }, { id: 'fused_consciousness', qty: 1 }] },
+            'hallowed_gold': { name: 'Hallowed Gold', inputs: [{ id: 'sagrado_spirit', qty: 2 }, { id: 'arcane_spirit', qty: 1 }, { id: 'gold_ingot', qty: 1 }, { id: 'quartz', qty: 4 }] },
+            'fused_consciousness': { name: 'Fused Consciousness', inputs: [{ id: 'complete_design', qty: 1 }] },
+            'complete_design': { name: 'Complete Design', inputs: [{ id: 'anomalous_design', qty: 1 }, { id: 'sagrado_spirit', qty: 4 }, { id: 'wicked_spirit', qty: 4 }, { id: 'arcane_spirit', qty: 4 }, { id: 'eldritch_spirit', qty: 4 }, { id: 'aerial_spirit', qty: 4 }, { id: 'aqueous_spirit', qty: 4 }, { id: 'earthen_spirit', qty: 4 }, { id: 'infernal_spirit', qty: 4 }] },
+            'anomalous_design': { name: 'Anomalous Design', inputs: [{ id: 'iron_block', qty: 1 }] },
+
+            // UTILITÁRIOS
+            'iron_block': { name: 'Iron Block', inputs: [{ id: 'iron_ingot', qty: 9 }] },
             'netherite_ingot': { name: 'Netherite Ingot', inputs: [{ id: 'gold_ingot', qty: 4 }, { id: 'netherite_scrap', qty: 4 }] },
-            'harmonic_essence': { name: 'Harmonic Essence', multiplier: 1000, inputs: [{ id: 'thermal_monitor_durability', qty: 1 }, { id: 'pure_vitae', qty: 500 }, { id: 'cursed_vitae', qty: 500 }] },
-            'pure_vitae': { name: 'Pure Vitae', multiplier: 1000, inputs: [{ id: 'powdered_arcane', qty: 8 }, { id: 'condensed_runic_sap', qty: 1 }] },
-            'cursed_vitae': { name: 'Cursed Vitae', multiplier: 1000, inputs: [{ id: 'powdered_arcane', qty: 8 }, { id: 'condensed_cursed_sap', qty: 1 }] },
-            'soul_stained_steel_plating': { name: 'Soul Stained Steel Plating', multiplier: 2, inputs: [{ id: 'soul_stained_steel_ingot', qty: 1 }, { id: 'soul_stained_steel_nugget', qty: 4 }] },
+            'harmonic_essence': { name: 'Harmonic Essence', yield: 1000, inputs: [{ id: 'thermal_monitor_durability', qty: 1 }, { id: 'pure_vitae', qty: 500 }, { id: 'cursed_vitae', qty: 500 }] },
+            'pure_vitae': { name: 'Pure Vitae', yield: 1000, inputs: [{ id: 'powdered_arcane', qty: 8 }, { id: 'condensed_runic_sap', qty: 1 }] },
+            'cursed_vitae': { name: 'Cursed Vitae', yield: 1000, inputs: [{ id: 'powdered_arcane', qty: 8 }, { id: 'condensed_cursed_sap', qty: 1 }] },
+            'soul_stained_steel_plating': { name: 'Soul Stained Steel Plating', yield: 2, inputs: [{ id: 'soul_stained_steel_ingot', qty: 1 }, { id: 'soul_stained_steel_nugget', qty: 4 }] },
             'soul_stained_steel_ingot': { name: 'Soul Stained Steel Ingot', inputs: [{ id: 'processed_soulstone', qty: 4 }, { id: 'wicked_spirit', qty: 3 }, { id: 'arcane_spirit', qty: 1 }, { id: 'earthen_spirit', qty: 1 }] },
-            'soul_stained_steel_nugget': { name: 'Soul Stained Steel Nugget', inputs: [{ id: 'soul_stained_steel_ingot', qty: 1/9 }] },
-            'thermal_monitor_durability': { name: 'Thermal Monitor (Uso)', inputs: [{ id: 'thermal_monitor_mechanism', qty: 1/256 }] },
+            'soul_stained_steel_nugget': { name: 'Soul Stained Steel Nugget', yield: 9, inputs: [{ id: 'soul_stained_steel_ingot', qty: 1 }] },
+            'thermal_monitor_durability': { name: 'Monitor Usage', yield: 256, inputs: [{ id: 'thermal_monitor_mechanism', qty: 1 }] },
             'thermal_monitor_mechanism': { name: 'Thermal Monitor Mechanism', inputs: [{ id: 'brass_ingot', qty: 5 }, { id: 'obsidian', qty: 5 }, { id: 'redstone', qty: 5 }] },
-            'ascendant_sandpaper_durability': { name: 'Sandpaper (Uso)', inputs: [{ id: 'ascendant_sandpaper', qty: 1/16 }] },
-            'ascendant_sandpaper': { name: 'Ascendant Sandpaper', inputs: [{ id: 'sand', qty: 1 }, { id: 'paper', qty: 1 }, { id: 'powdered_ascendant', qty: 1 }] },
-            'powdered_ascendant': { name: 'Powdered Ascendant', multiplier: 2, chance: 0.25, inputs: [{ id: 'ascendant_ingot', qty: 1 }] }
+            'ascendant_sandpaper_durability': { name: 'Sandpaper Usage', yield: 16, inputs: [{ id: 'ascendant_sandpaper', qty: 1 }] },
+            'ascendant_sandpaper': { name: 'Ascendant Sandpaper', inputs: [{ id: 'sand', qty: 1 }, { id: 'paper', qty: 1 }, { id: 'powdered_ascendant', qty: 1 }] }
         };
 
         const ITEMS_DATA = {
-            'arcane_essence': { name: 'Arcane Essence', unit: 'mb', color: 'text-purple-400' },
-            'lava': { name: 'Lava', unit: 'mb', color: 'text-orange-500' },
-            'iron_ingot': { name: 'Iron Ingot', unit: 'un', color: 'text-gray-300' },
-            'gold_block': { name: 'Gold Block', unit: 'un', color: 'text-yellow-400' },
+            'arcane_essence': { name: 'Arcane Essence', unit: 'mb', color: 'text-purple-400', isFluid: true },
+            'lava': { name: 'Lava', unit: 'mb', color: 'text-orange-500', isFluid: true },
+            'pure_vitae': { name: 'Pure Vitae', unit: 'mb', color: 'text-cyan-300', isFluid: true },
+            'cursed_vitae': { name: 'Cursed Vitae', unit: 'mb', color: 'text-emerald-500', isFluid: true },
+            'harmonic_essence': { name: 'Harmonic Essence', unit: 'mb', color: 'text-indigo-300', isFluid: true },
+            'iron_ingot': { name: 'Iron Ingot', unit: 'un', color: 'text-zinc-400' },
             'gold_ingot': { name: 'Gold Ingot', unit: 'un', color: 'text-yellow-500' },
             'netherite_scrap': { name: 'Netherite Scrap', unit: 'un', color: 'text-neutral-500' },
+            'netherrack': { name: 'Netherrack', unit: 'un', color: 'text-red-800' },
+            'diamond': { name: 'Diamond', unit: 'un', color: 'text-sky-300' },
             'condensed_runic_sap': { name: 'Condensed Runic Sap', unit: 'un', color: 'text-cyan-400' },
             'condensed_cursed_sap': { name: 'Condensed Cursed Sap', unit: 'un', color: 'text-emerald-700' },
             'experience_block': { name: 'Experience Block', unit: 'un', color: 'text-green-400' },
@@ -111,254 +154,212 @@
             'arcane_spirit': { name: 'Arcane Spirit', unit: 'un', color: 'text-purple-500' },
             'earthen_spirit': { name: 'Earthen Spirit', unit: 'un', color: 'text-yellow-700' },
             'eldritch_spirit': { name: 'Eldritch Spirit', unit: 'un', color: 'text-indigo-600' },
-            'sagrado_spirit': { name: 'Sagrado Spirit', unit: 'un', color: 'text-yellow-200' },
+            'sagrado_spirit': { name: 'Sacred Spirit', unit: 'un', color: 'text-yellow-200' },
             'wicked_spirit': { name: 'Wicked Spirit', unit: 'un', color: 'text-pink-600' },
-            'void_salt': { name: 'Void Salt', unit: 'un', color: 'text-blue-200' },
-            'null_void': { name: 'Null Void', unit: 'un', color: 'text-gray-800' },
+            'aerial_spirit': { name: 'Aerial Spirit', unit: 'un', color: 'text-blue-200' },
+            'aqueous_spirit': { name: 'Aqueous Spirit', unit: 'un', color: 'text-sky-400' },
+            'quartz': { name: 'Quartz', unit: 'un', color: 'text-zinc-100' },
+            'arcane_pebble': { name: 'Arcane Pebble', unit: 'un', color: 'text-purple-200' },
+            'mana_upgrade_orb': { name: 'Mana Upgrade Orb', unit: 'un', color: 'text-rose-500' },
             'blaze_powder': { name: 'Blaze Powder', unit: 'un', color: 'text-orange-400' },
-            'null_slate': { name: 'Null Slate', unit: 'un', color: 'text-gray-600' },
+            'gold_block': { name: 'Gold Block', unit: 'un', color: 'text-yellow-400' },
             'processed_soulstone': { name: 'Processed Soulstone', unit: 'un', color: 'text-blue-400' },
             'brass_ingot': { name: 'Brass Ingot', unit: 'un', color: 'text-yellow-600' },
             'obsidian': { name: 'Obsidian', unit: 'un', color: 'text-purple-900' },
             'redstone': { name: 'Redstone', unit: 'un', color: 'text-red-600' },
-            'sand': { name: 'Sand', unit: 'un', color: 'text-yellow-100' },
+            'sand': { name: 'Sand', unit: 'un', color: 'text-orange-200' },
             'paper': { name: 'Paper', unit: 'un', color: 'text-white' },
+            'void_salt': { name: 'Void Salt', unit: 'un', color: 'text-blue-200' },
+            'null_void': { name: 'Null Void', unit: 'un', color: 'text-gray-800' },
+            'null_slate': { name: 'Null Slate', unit: 'un', color: 'text-gray-600' }
         };
 
         function App() {
-            const [targetItem, setTargetItem] = useState('mithril_ingot');
+            const [viewMode, setViewMode] = useState('calc');
+            const [targetItem, setTargetItem] = useState('adamantite_ingot');
+            const [targetTemplate, setTargetTemplate] = useState('arcane_template');
             const [quantityInput, setQuantityInput] = useState('1');
-            const [useAutoPolish, setUseAutoPolish] = useState(true);
             const [ancestralChance, setAncestralChance] = useState(77);
             const [arcaneReturnChance, setArcaneReturnChance] = useState(75);
-            const [inventory, setInventory] = useState({});
+            const [useCheapCraft, setUseCheapCraft] = useState(false);
             const [completedItems, setCompletedItems] = useState(new Set());
-            const [viewMode, setViewMode] = useState('calc');
 
-            const quantity = parseInt(quantityInput) || 0;
-
-            const updateInventory = (id, val) => {
-                setInventory(prev => ({ ...prev, [id]: Math.max(0, parseFloat(val) || 0) }));
-            };
-
-            const toggleComplete = (id) => {
-                setCompletedItems(prev => {
-                    const next = new Set(prev);
-                    if (next.has(id)) next.delete(id);
-                    else next.add(id);
-                    return next;
-                });
-            };
-
-            const resetAll = () => {
-                setInventory({});
-                setCompletedItems(new Set());
-            };
+            const quantity = Math.max(0, parseInt(quantityInput) || 0);
+            const activeTarget = viewMode === 'templates' ? targetTemplate : targetItem;
 
             const totals = useMemo(() => {
                 const results = {};
-                const stockUsed = {};
+                const surplusPool = {};
 
                 function calculate(itemId, requiredQty) {
-                    if (requiredQty <= 0) return;
+                    if (requiredQty <= 0.0001) return;
 
-                    if (!results[itemId]) {
-                        results[itemId] = { gross: 0, net: 0, isResource: !!ITEMS_DATA[itemId] };
-                    }
-                    
+                    const availableInSurplus = surplusPool[itemId] || 0;
+                    const takenFromSurplus = Math.min(requiredQty, availableInSurplus);
+                    let needed = requiredQty - takenFromSurplus;
+                    surplusPool[itemId] = Math.max(0, availableInSurplus - takenFromSurplus);
+
+                    if (completedItems.has(itemId)) needed = 0;
+
+                    if (!results[itemId]) results[itemId] = { net: 0, gross: 0, isResource: !!ITEMS_DATA[itemId] };
+                    results[itemId].net += needed;
                     results[itemId].gross += requiredQty;
 
-                    const isManualDone = completedItems.has(itemId);
-                    const inStock = inventory[itemId] || 0;
-                    const alreadyUsed = stockUsed[itemId] || 0;
+                    if (needed <= 0.0001) return;
+
+                    const recipe = RECIPES[itemId];
+                    if (!recipe) return;
+
+                    const yieldPerCraft = recipe.yield || 1;
+                    let probFactor = 1;
+                    if (itemId === 'ancestral_ingot') probFactor = 1 / (ancestralChance / 100);
+                    else if (recipe.useArcaneReturn) probFactor = (100 - arcaneReturnChance) / 100;
+                    else if (recipe.chance) probFactor = 1 / recipe.chance;
+
+                    const numCrafts = Math.ceil(needed / (yieldPerCraft / probFactor));
+                    const totalProduced = numCrafts * yieldPerCraft;
                     
-                    const available = isManualDone ? 1000000000 : Math.max(0, inStock - alreadyUsed);
-                    
-                    let needed = requiredQty;
-                    if (available > 0) {
-                        const taken = Math.min(requiredQty, available);
-                        stockUsed[itemId] = (stockUsed[itemId] || 0) + taken;
-                        needed -= taken;
-                    }
+                    const leftOver = totalProduced - (needed * probFactor);
+                    if (leftOver > 0.001) surplusPool[itemId] = (surplusPool[itemId] || 0) + leftOver;
 
-                    results[itemId].net += needed;
+                    const inputs = (useCheapCraft && recipe.cheapInputs) ? recipe.cheapInputs : recipe.inputs;
 
-                    if (needed > 0 && RECIPES[itemId]) {
-                        const recipe = RECIPES[itemId];
-                        let attempts = needed / (recipe.multiplier || 1);
-
-                        if (itemId === 'ancestral_ingot') attempts /= (ancestralChance / 100);
-                        else if (recipe.useArcaneReturn) attempts *= (100 - arcaneReturnChance) / 100;
-                        else if (recipe.chance) attempts /= recipe.chance;
-
-                        recipe.inputs.forEach(input => {
-                            if (input.optional === 'auto_polish' && !useAutoPolish) return;
-                            let inputQty = attempts * input.qty;
-                            if (recipe.recycleId && input.id === recipe.recycleId) {
-                                const returnedQty = (attempts * recipe.recycleChance);
-                                inputQty -= returnedQty;
-                            }
-                            calculate(input.id, inputQty);
-                        });
-                    }
+                    inputs.forEach(input => {
+                        let inputQty = numCrafts * input.qty;
+                        if (recipe.recycleId && input.id === recipe.recycleId) {
+                            const recycleQty = numCrafts * recipe.recycleChance;
+                            inputQty = Math.max(0, inputQty - recycleQty);
+                        }
+                        calculate(input.id, inputQty);
+                    });
                 }
 
-                calculate(targetItem, quantity);
-                return { items: results, stockUsed };
-            }, [targetItem, quantity, useAutoPolish, ancestralChance, arcaneReturnChance, inventory, completedItems]);
+                calculate(activeTarget, quantity);
+                return { items: results, surplus: surplusPool };
+            }, [activeTarget, quantity, ancestralChance, arcaneReturnChance, completedItems, useCheapCraft, viewMode]);
 
-            // Filtragem e Ordenação de maior para menor (baseado no net que falta coletar)
-            const rawResources = useMemo(() => 
-                Object.entries(totals.items)
-                    .filter(([_, d]) => d.isResource)
-                    .sort((a, b) => b[1].net - a[1].net),
-                [totals.items]
-            );
-
-            const intermediateItems = useMemo(() => 
-                Object.entries(totals.items)
-                    .filter(([id, d]) => !d.isResource && id !== targetItem)
-                    .sort((a, b) => b[1].net - a[1].net),
-                [totals.items, targetItem]
-            );
-
-            const ItemCard = ({ id, data, isInter }) => {
-                const isDone = data.net <= 0.0001;
-                const isManualDone = completedItems.has(id);
-                const itemName = isInter ? (RECIPES[id]?.name || id) : (ITEMS_DATA[id]?.name || id);
-                const unit = isInter ? 'un' : (ITEMS_DATA[id]?.unit || 'un');
-                const colorClass = isInter ? 'text-neutral-300' : (ITEMS_DATA[id]?.color || 'text-neutral-300');
-
-                return (
-                    <div className={`flex flex-col p-4 rounded-2xl border transition-all duration-300 relative ${isDone ? 'bg-green-500/10 border-green-500/40 shadow-[0_0_20px_rgba(34,197,94,0.1)]' : 'bg-neutral-800/40 border-neutral-700/50'}`}>
-                        <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center gap-3">
-                                <button onClick={() => toggleComplete(id)} className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all border-2 ${isManualDone ? 'bg-green-600 border-green-600 text-white' : 'border-neutral-700 hover:border-purple-500 text-transparent hover:text-purple-500'}`}><Icon name="Check" className="w-4 h-4" /></button>
-                                <div className="flex flex-col">
-                                    <span className={`text-sm font-black flex items-center gap-2 ${colorClass}`}>{itemName}{isDone && <Icon name="CheckCircle2" className="w-4 h-4 text-green-500 animate-in zoom-in duration-300" />}</span>
-                                    <span className="text-[9px] text-neutral-600 font-bold uppercase tracking-tighter">Total Requerido: {data.gross.toFixed(1)} {unit}</span>
-                                </div>
-                            </div>
-                            <div className="text-right">
-                                <div className={`text-lg font-mono font-black ${isDone ? 'text-green-500' : 'text-white'}`}>
-                                    {isDone ? 'PRONTO' : (data.net > 100 ? Math.ceil(data.net).toLocaleString() : data.net.toFixed(1))} {!isDone && <span className="ml-1 text-[10px] text-neutral-500 uppercase">{unit}</span>}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-2 bg-neutral-950/50 p-2 rounded-xl border border-neutral-800/50">
-                            <Icon name="Package" className="w-3 h-3 text-neutral-600" />
-                            <input type="text" placeholder="Estoque..." value={inventory[id] || ''} onChange={(e) => updateInventory(id, e.target.value.replace(/[^0-9.]/g, ''))} disabled={isManualDone} className="bg-transparent border-none text-[10px] font-mono font-bold text-purple-400 focus:ring-0 w-full p-0" />
-                            {totals.stockUsed[id] > 0 && <div className="flex items-center gap-1 text-green-500 text-[9px] font-bold ml-auto font-black uppercase"><Icon name="ArrowRight" className="w-2 h-2" /> Usados: {totals.stockUsed[id].toFixed(1)}</div>}
-                        </div>
-                    </div>
-                );
-            };
+            const sortedRaw = Object.entries(totals.items).filter(([_, d]) => d.isResource).sort((a,b) => b[1].net - a[1].net);
+            const sortedInter = Object.entries(totals.items).filter(([id, d]) => !d.isResource && id !== activeTarget).sort((a,b) => b[1].net - a[1].net);
 
             return (
-                <div className="min-h-screen bg-neutral-950 text-neutral-200 p-4 md:p-8 font-sans">
-                    <div className="max-w-7xl mx-auto">
-                        <header className="mb-8 flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-neutral-800 pb-8">
-                            <div className="space-y-2">
-                                <div className="flex items-center gap-3">
-                                    <div className="bg-purple-600 p-2 rounded-lg shadow-lg shadow-purple-900/20"><Icon name="Calculator" className="w-6 h-6 text-white" /></div>
-                                    <h1 className="text-3xl font-black tracking-tighter text-white uppercase italic">Tenebris <span className="text-purple-500">Fabricator</span></h1>
-                                </div>
-                                <p className="text-neutral-500 font-bold text-xs uppercase tracking-widest opacity-60">Inventory & Resource Management</p>
-                            </div>
-                            <div className="flex flex-wrap items-center gap-4">
-                                {(Object.keys(inventory).length > 0 || completedItems.size > 0) && <button onClick={resetAll} className="flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 px-5 py-2.5 rounded-xl text-xs font-black uppercase transition-all border border-red-500/20"><Icon name="RefreshCcw" className="w-3 h-3" /> Limpar Tudo</button>}
-                                <nav className="flex bg-neutral-900 p-1.5 rounded-xl border border-neutral-800 shadow-inner">
-                                    <button onClick={() => setViewMode('calc')} className={`px-8 py-2.5 rounded-lg text-xs font-black uppercase transition-all ${viewMode === 'calc' ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/20' : 'text-neutral-500 hover:text-neutral-300'}`}>Calculadora</button>
-                                    <button onClick={() => setViewMode('recipes')} className={`px-8 py-2.5 rounded-lg text-xs font-black uppercase transition-all ${viewMode === 'recipes' ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/20' : 'text-neutral-500 hover:text-neutral-300'}`}>Receitas</button>
-                                </nav>
-                            </div>
-                        </header>
+                <div className="min-h-screen p-4 max-w-5xl mx-auto">
+                    <header className="mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-zinc-800 pb-4">
+                        <div className="flex items-center gap-3">
+                            <div className="bg-violet-600 p-1.5 rounded-md shadow-lg"><Icon name="Calculator" className="text-white w-5 h-5" /></div>
+                            <h1 className="text-lg font-black uppercase tracking-tight italic leading-none">Tenebris <span className="text-violet-500 text-sm block sm:inline">Fabricator</span></h1>
+                        </div>
+                        <nav className="flex bg-zinc-900 p-1 rounded-lg border border-zinc-800 flex-wrap justify-center">
+                            {['calc', 'templates', 'surplus', 'recipes'].map(m => (
+                                <button key={m} onClick={() => { setViewMode(m); setCompletedItems(new Set()); }} className={`px-3 py-1.5 rounded-md text-[9px] font-bold uppercase transition-all ${viewMode === m ? 'bg-violet-600 text-white' : 'text-zinc-500 hover:text-zinc-300'}`}>
+                                    {m === 'calc' ? 'Painel' : m === 'templates' ? 'Equips' : m === 'surplus' ? 'Sobras' : 'Guia'}
+                                </button>
+                            ))}
+                        </nav>
+                    </header>
 
-                        {viewMode === 'calc' ? (
-                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                                <div className="lg:col-span-4 space-y-6">
-                                    <section className="bg-neutral-900/50 border border-neutral-800 rounded-3xl p-6 shadow-2xl backdrop-blur-md">
-                                        <h2 className="text-[10px] font-black text-neutral-500 uppercase tracking-[0.3em] mb-8 flex items-center gap-2"><Icon name="Settings2" className="w-4 h-4 text-purple-500" /> Configuração</h2>
-                                        <div className="space-y-8">
-                                            <div className="space-y-3">
-                                                <label className="text-[10px] font-black text-neutral-500 uppercase">Item de Destino</label>
-                                                <select value={targetItem} onChange={(e) => setTargetItem(e.target.value)} className="w-full bg-neutral-950 border-2 border-neutral-800 rounded-2xl p-4 text-sm font-black focus:border-purple-500 outline-none cursor-pointer">
-                                                    {Object.entries(RECIPES).filter(([_, r]) => r.tier).sort((a,b) => a[1].name.localeCompare(b[1].name)).map(([id, r]) => (
-                                                        <option key={id} value={id}>{r.name} ({r.tier})</option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                            <div className="space-y-3">
-                                                <label className="text-[10px] font-black text-neutral-500 uppercase">Volume Desejado</label>
-                                                <input type="text" value={quantityInput} onChange={(e) => setQuantityInput(e.target.value.replace(/[^0-9]/g, ''))} className="w-full bg-neutral-950 border-2 border-neutral-800 rounded-2xl p-5 text-2xl font-mono font-black text-purple-400 focus:border-purple-500 outline-none" />
-                                            </div>
-                                            <div className="bg-neutral-800/30 p-6 rounded-3xl border border-neutral-700/30 space-y-6">
-                                                <label className="flex items-center justify-between cursor-pointer group"><span className="text-xs font-black text-neutral-400 uppercase tracking-wider group-hover:text-purple-400 transition-colors">Polimento Automático</span>
-                                                    <div className={`w-14 h-7 rounded-full relative transition-all duration-300 ${useAutoPolish ? 'bg-purple-600' : 'bg-neutral-800 border border-neutral-700'}`}>
-                                                        <input type="checkbox" className="hidden" checked={useAutoPolish} onChange={() => setUseAutoPolish(!useAutoPolish)} />
-                                                        <div className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-all duration-300 shadow-md ${useAutoPolish ? 'left-8' : 'left-1'}`} />
-                                                    </div>
-                                                </label>
-                                                <div className="space-y-4">
-                                                    <div className="flex justify-between text-[10px] font-black text-neutral-500 uppercase"><span>Chance Ancestral</span><span className="text-purple-400 font-mono text-xs">{ancestralChance}%</span></div>
-                                                    <input type="range" min="50" max="100" value={ancestralChance} onChange={(e) => setAncestralChance(parseInt(e.target.value))} className="w-full h-2 bg-neutral-900 rounded-lg appearance-none cursor-pointer accent-purple-500 border border-neutral-800" />
-                                                </div>
-                                                <div className="space-y-4">
-                                                    <div className="flex justify-between text-[10px] font-black text-neutral-500 uppercase"><span>Retorno de Arcane (Pó)</span><span className="text-purple-400 font-mono text-xs">{arcaneReturnChance}%</span></div>
-                                                    <input type="range" min="0" max="100" value={arcaneReturnChance} onChange={(e) => setArcaneReturnChance(parseInt(e.target.value))} className="w-full h-2 bg-neutral-900 rounded-lg appearance-none cursor-pointer accent-purple-500 border border-neutral-800" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-                                    <div className="p-6 bg-blue-950/20 border-2 border-blue-500/10 rounded-3xl flex gap-3 italic">
-                                        <Icon name="RotateCcw" className="w-5 h-5 text-blue-400 shrink-0" />
-                                        <p className="text-[11px] text-blue-200/50 leading-relaxed font-medium">Lembre-se: O <b>Mithril Ingot</b> tem 20% de reciclagem. Falhas devolvem o metal base, poupando a criação inicial mas exigindo polimento extra.</p>
+                    {viewMode === 'calc' || viewMode === 'templates' ? (
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                            <aside className="lg:col-span-4 space-y-4">
+                                <div className="bg-zinc-900/50 p-4 rounded-xl border border-zinc-800 space-y-4 shadow-xl">
+                                    <div>
+                                        <label className="text-[9px] font-black text-zinc-500 uppercase mb-1 block tracking-widest">Selecione o Alvo</label>
+                                        {viewMode === 'calc' ? (
+                                            <select value={targetItem} onChange={(e) => setTargetItem(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-md p-2 text-xs font-bold outline-none focus:border-violet-500">
+                                                {Object.entries(RECIPES).filter(([_, r]) => r.tier && r.tier !== 'Templates').sort((a,b) => a[1].tier.localeCompare(b[1].tier)).map(([id, r]) => <option key={id} value={id}>{r.name} ({r.tier})</option>)}
+                                            </select>
+                                        ) : (
+                                            <select value={targetTemplate} onChange={(e) => setTargetTemplate(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-md p-2 text-xs font-bold outline-none focus:border-violet-500">
+                                                {Object.entries(RECIPES).filter(([_, r]) => r.tier === 'Templates').map(([id, r]) => <option key={id} value={id}>{r.name}</option>)}
+                                            </select>
+                                        )}
                                     </div>
-                                </div>
-                                <div className="lg:col-span-8 space-y-8">
-                                    <section className="bg-neutral-900 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
-                                        <div className="p-6 border-b border-neutral-800 bg-neutral-900/50 flex gap-3 items-center"><Icon name="Database" className="w-5 h-5 text-purple-500" /><h2 className="text-sm font-black uppercase text-white tracking-widest">Recursos Base</h2></div>
-                                        <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            {rawResources.map(([id, data]) => <ItemCard key={id} id={id} data={data} isInter={false} />)}
-                                        </div>
-                                    </section>
-                                    <section className="bg-neutral-900 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
-                                        <div className="p-6 border-b border-neutral-800 bg-neutral-900/50 flex gap-3 items-center"><Icon name="Layers" className="w-5 h-5 text-indigo-500" /><h2 className="text-sm font-black uppercase text-white tracking-widest">Intermediários</h2></div>
-                                        <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            {intermediateItems.map(([id, data]) => <ItemCard key={id} id={id} data={data} isInter={true} />)}
-                                        </div>
-                                    </section>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="bg-neutral-900 border border-neutral-800 rounded-[3rem] p-12 shadow-2xl">
-                                <h2 className="text-3xl font-black text-white mb-12 flex items-center gap-4 uppercase tracking-tighter italic"><Icon name="Layers" className="w-10 h-10 text-purple-500" /> Blueprint Dictionary</h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                                    {Object.entries(RECIPES).filter(([_, r]) => r.tier).sort((a,b) => a[1].name.localeCompare(b[1].name)).map(([id, r]) => (
-                                        <div key={id} className="bg-neutral-950 border border-neutral-800 rounded-3xl p-8 hover:border-purple-500 transition-all group relative overflow-hidden">
-                                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                            <div className="flex items-center justify-between mb-6">
-                                                <h3 className="font-black text-lg text-white uppercase italic">{r.name}</h3>
-                                                <span className="text-[9px] font-black px-3 py-1 bg-purple-500/10 text-purple-500 rounded-full border border-purple-500/20 uppercase tracking-widest">{r.tier}</span>
+                                    <div>
+                                        <label className="text-[9px] font-black text-zinc-500 uppercase mb-1 block tracking-widest">Quantidade</label>
+                                        <input type="text" value={quantityInput} onChange={(e) => setQuantityInput(e.target.value.replace(/[^0-9]/g, ''))} className="w-full bg-zinc-950 border border-zinc-800 rounded-md p-2 text-lg font-mono font-black text-violet-400 outline-none" />
+                                    </div>
+                                    
+                                    <div className="pt-4 border-t border-zinc-800 space-y-4">
+                                        <div className="flex items-center justify-between group cursor-pointer" onClick={() => setUseCheapCraft(!useCheapCraft)}>
+                                            <div className="flex items-center gap-2">
+                                                <Icon name="Copy" className={useCheapCraft ? "text-violet-400" : "text-zinc-600"} />
+                                                <span className="text-[9px] font-black uppercase text-zinc-400">Modo Duplicação</span>
                                             </div>
-                                            <div className="space-y-3">
-                                                <div className="text-[9px] font-black text-neutral-600 uppercase mb-4 pb-2 border-b border-neutral-900">Standard Ingredients</div>
-                                                {r.inputs.map((input, idx) => (
-                                                    <div key={idx} className={`flex justify-between items-center text-xs ${input.optional === 'auto_polish' ? 'text-neutral-600 italic' : 'text-neutral-400 font-medium'}`}>
-                                                        <span>{ITEMS_DATA[input.id]?.name || RECIPES[input.id]?.name || input.id}</span>
-                                                        <span className="font-mono font-bold text-neutral-500">
-                                                            {input.qty < 1 ? input.qty.toFixed(3) : input.qty.toLocaleString()}
-                                                            <span className="ml-1 opacity-40 uppercase text-[8px]">{ITEMS_DATA[input.id]?.unit || 'un'}</span>
-                                                        </span>
+                                            <div className={`w-8 h-4 rounded-full relative transition-all ${useCheapCraft ? 'bg-violet-600' : 'bg-zinc-800'}`}>
+                                                <div className={`absolute top-0.5 w-3 h-3 bg-white rounded-full transition-all ${useCheapCraft ? 'left-4.5' : 'left-0.5'}`} />
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            <div className="flex justify-between text-[9px] font-black uppercase text-zinc-500"><span>Ancestral Success</span><span className="text-violet-400">{ancestralChance}%</span></div>
+                                            <input type="range" min="50" max="100" value={ancestralChance} onChange={(e) => setAncestralChance(e.target.value)} className="w-full h-1 bg-zinc-800 rounded-lg appearance-none" />
+                                        </div>
+                                    </div>
+
+                                    <button onClick={() => setCompletedItems(new Set())} className="w-full py-2 bg-zinc-800 text-zinc-500 rounded-md text-[9px] font-black uppercase flex items-center justify-center gap-2 hover:bg-zinc-700 hover:text-zinc-300 transition-all"><Icon name="RefreshCcw" /> Limpar Checklist</button>
+                                </div>
+                            </aside>
+
+                            <main className="lg:col-span-8 space-y-6">
+                                <section>
+                                    <h2 className="text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-3 flex items-center gap-2"><Icon name="Database" className="text-purple-500" /> Recursos Base</h2>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        {sortedRaw.map(([id, d]) => (
+                                            <div key={id} className={`p-2.5 rounded-lg border flex items-center justify-between ${d.net <= 0 ? 'bg-emerald-500/5 border-emerald-500/20 opacity-50' : 'bg-zinc-900 border-zinc-800'}`}>
+                                                <div className="flex items-center gap-2.5 overflow-hidden">
+                                                    <button onClick={() => {const n = new Set(completedItems); n.has(id) ? n.delete(id) : n.add(id); setCompletedItems(n);}} className={`p-1 rounded border shrink-0 ${completedItems.has(id) ? 'bg-emerald-600 border-emerald-600' : 'border-zinc-700'}`}><Icon name="Check" className="text-white"/></button>
+                                                    <div className="truncate">
+                                                        <p className={`text-[9px] font-bold truncate ${ITEMS_DATA[id]?.color}`}>{ITEMS_DATA[id]?.name}</p>
+                                                        <p className="text-[12px] font-mono font-black text-white">{d.net <= 0 ? 'OK' : Math.ceil(d.net).toLocaleString()} <span className="text-[7px] text-zinc-500 font-bold uppercase">{ITEMS_DATA[id]?.unit}</span></p>
                                                     </div>
-                                                ))}
+                                                </div>
                                             </div>
+                                        ))}
+                                    </div>
+                                </section>
+
+                                <section>
+                                    <h2 className="text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-3 flex items-center gap-2"><Icon name="Layers" className="text-indigo-500" /> Cadeia de Produção</h2>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        {sortedInter.map(([id, d]) => (
+                                            <div key={id} className={`p-2.5 rounded-lg border flex items-center justify-between ${d.net <= 0 ? 'bg-emerald-500/5 border-emerald-500/20 opacity-50' : 'bg-zinc-900 border-zinc-800'}`}>
+                                                <div className="flex items-center gap-2.5 overflow-hidden">
+                                                    <button onClick={() => {const n = new Set(completedItems); n.has(id) ? n.delete(id) : n.add(id); setCompletedItems(n);}} className={`p-1 rounded border shrink-0 ${completedItems.has(id) ? 'bg-emerald-600 border-emerald-600' : 'border-zinc-700'}`}><Icon name="Check" className="text-white"/></button>
+                                                    <div className="truncate">
+                                                        <p className="text-[9px] font-bold text-zinc-400 truncate tracking-tight">{RECIPES[id]?.name}</p>
+                                                        <p className="text-[12px] font-mono font-black text-white">{d.net <= 0 ? 'OK' : Math.ceil(d.net).toLocaleString()} <span className="text-[7px] text-zinc-500 font-bold uppercase">un</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+                            </main>
+                        </div>
+                    ) : viewMode === 'surplus' ? (
+                        <div className="bg-zinc-900/50 p-6 rounded-xl border border-zinc-800">
+                            <h2 className="text-sm font-black uppercase italic mb-6 tracking-tight flex items-center gap-2 tracking-widest text-emerald-500"><Icon name="Plus" /> Sobras do Processamento</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                {Object.entries(totals.surplus).filter(([_, q]) => q > 0.01).sort((a,b) => b[1]-a[1]).map(([id, qty]) => (
+                                    <div key={id} className="p-3 rounded-lg bg-zinc-950 border border-zinc-800 flex justify-between items-center group">
+                                        <div className="overflow-hidden">
+                                            <p className="text-[7px] font-black text-zinc-600 uppercase tracking-widest truncate">{RECIPES[id]?.tier || 'SUB-ITEM'}</p>
+                                            <p className="text-[10px] font-bold text-zinc-200 truncate">{RECIPES[id]?.name || ITEMS_DATA[id]?.name}</p>
                                         </div>
-                                    ))}
-                                </div>
+                                        <p className="text-lg font-mono font-black text-emerald-500 ml-2">+{Math.floor(qty)}</p>
+                                    </div>
+                                ))}
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            {Object.entries(RECIPES).filter(([_, r]) => r.tier).sort((a,b) => a[1].tier.localeCompare(b[1].tier)).map(([id, r]) => (
+                                <div key={id} className="bg-zinc-900/40 p-3 rounded-lg border border-zinc-800 flex flex-col h-full">
+                                    <div className="flex justify-between items-center mb-2"><h3 className="text-[9px] font-black text-zinc-100 uppercase tracking-tight italic">{r.name}</h3><span className="text-[6px] bg-violet-500/10 text-violet-400 px-1 py-0.5 rounded font-black uppercase">{r.tier}</span></div>
+                                    <div className="space-y-1 flex-grow">{r.inputs.map((i, idx) => <div key={idx} className="flex justify-between text-[8px] text-zinc-500 border-b border-zinc-800/30 pb-0.5 last:border-0"><span>{ITEMS_DATA[i.id]?.name || RECIPES[i.id]?.name}</span><span className="font-bold text-zinc-400">{i.qty} {ITEMS_DATA[i.id]?.unit || 'un'}</span></div>)}</div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             );
         }
