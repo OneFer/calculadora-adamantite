@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora Tenebris - V4</title>
+  <title>Calculadora Tenebris - V8 (Correção Mithril)</title>
   
   <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -93,7 +93,7 @@
           <i data-lucide="cpu" class="text-purple-500 w-6 h-6"></i>
           <h1 class="text-2xl font-black tracking-tighter text-white uppercase">Tenebris <span class="text-purple-500">Logistics</span></h1>
         </div>
-        <p class="text-sm font-semibold tracking-widest text-stone-400 uppercase">Módulo de Processamento (V4 - Árvore de Pastas)</p>
+        <p class="text-sm font-semibold tracking-widest text-stone-400 uppercase">Módulo de Processamento (V8 - Mithril Tier)</p>
       </div>
       
       <!-- Status do Sistema -->
@@ -139,6 +139,20 @@
                 <option value="tenebris:ascendant_ingot">Ascendant Ingot</option>
                 <option value="tenebris:ascendant_block">Ascendant Block</option>
                 <option value="tenebris:ascendant_rune">Ascendant Rune</option>
+              </optgroup>
+              <optgroup label="Nível: Esoteric">
+                <option value="tenebris:esoteric_upgrade_smithing_template">Esoteric Smithing Template</option>
+                <option value="tenebris:esoteric_sheet">Esoteric Sheet</option>
+                <option value="tenebris:esoteric_ingot">Esoteric Ingot</option>
+                <option value="tenebris:esoteric_block">Esoteric Block</option>
+                <option value="tenebris:esoteric_rune">Esoteric Rune</option>
+              </optgroup>
+              <optgroup label="Nível: Mithril">
+                <option value="tenebris:mithril_upgrade_smithing_template">Mithril Smithing Template</option>
+                <option value="tenebris:mithril_sheet">Mithril Sheet</option>
+                <option value="tenebris:mithril_ingot">Mithril Ingot</option>
+                <option value="tenebris:mithril_block">Mithril Block</option>
+                <option value="tenebris:mithril_rune">Mithril Rune</option>
               </optgroup>
               <optgroup label="Nível: Harmonic & Golden">
                 <option value="tenebris:harmonic_ingot_sheet">Harmonic Ingot Sheet</option>
@@ -224,6 +238,18 @@
           </div>
         </div>
 
+        <!-- Painel de SOBRAS (Excedentes da Automação) -->
+        <div class="bg-stone-900/40 border border-stone-800 p-6 rounded-[2rem] shadow-2xl backdrop-blur-xl">
+          <h2 class="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-4 flex items-center gap-2">
+            <i data-lucide="archive" class="w-4 h-4"></i> Estoque Excedente (Sobras a Guardar)
+          </h2>
+          <p class="text-[10px] text-stone-500 mb-4 uppercase">Itens produzidos em lote que não foram totalmente gastos e ficarão no baú.</p>
+          
+          <div id="leftoversGrid" class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <!-- Items inseridos via JS -->
+          </div>
+        </div>
+
         <!-- Árvore de Produção (Pastas) -->
         <div class="bg-stone-900/40 border border-stone-800 p-6 rounded-[2rem] shadow-2xl backdrop-blur-xl">
           <h2 class="text-[10px] font-black uppercase tracking-widest text-purple-400 mb-4 flex items-center gap-2">
@@ -286,11 +312,19 @@
       "tenebris:ancestral_block": { yield: 1, ingredients: [{ item: "tenebris:ancestral_ingot", amount: 9 }] },
       "tenebris:ancestral_nugget": { yield: 9, ingredients: [{ item: "tenebris:ancestral_ingot", amount: 1 }] },
       "tenebris:ascendant_nugget": { yield: 9, ingredients: [{ item: "tenebris:ascendant_ingot", amount: 1 }] },
+      
+      "tenebris:esoteric_block": { yield: 1, ingredients: [{ item: "tenebris:esoteric_ingot", amount: 9 }] },
+      "tenebris:esoteric_nugget": { yield: 9, ingredients: [{ item: "tenebris:esoteric_ingot", amount: 1 }] },
+      
+      "tenebris:mithril_block": { yield: 1, ingredients: [{ item: "tenebris:mithril_ingot", amount: 9 }] },
+      "tenebris:mithril_nugget": { yield: 9, ingredients: [{ item: "tenebris:mithril_ingot", amount: 1 }] },
 
       // --- RUNAS ---
       "tenebris:arcane_rune": { yield: 1, ingredients: [{ item: "tenebris:arcane_nugget", amount: 6 }, { item: "malum:tainted_rock_tablet", amount: 1 }] },
       "tenebris:ancestral_rune": { yield: 1, ingredients: [{ item: "tenebris:ancestral_nugget", amount: 6 }, { item: "malum:tainted_rock_tablet", amount: 1 }] },
       "tenebris:ascendant_rune": { yield: 1, ingredients: [{ item: "tenebris:ascendant_nugget", amount: 6 }, { item: "malum:void_tablet", amount: 1 }] },
+      "tenebris:esoteric_rune": { yield: 1, ingredients: [{ item: "tenebris:esoteric_nugget", amount: 6 }, { item: "malum:void_tablet", amount: 1 }] },
+      "tenebris:mithril_rune": { yield: 1, ingredients: [{ item: "tenebris:mithril_nugget", amount: 6 }, { item: "malum:void_tablet", amount: 1 }] },
 
       // --- NÍVEL 1: ARCANE ---
       "tenebris:arcane_ingot": { yield: 1, ingredients: [ { item: "minecraft:iron_ingot", amount: 1 }, { item: "tenebris:thermal_monitor_mechanism", amount: 1, type: "durability" } ] },
@@ -317,6 +351,29 @@
       "tenebris:ascendant_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:ancestral_upgrade_smithing_template", amount: 1 }, { item: "tenebris:ascendant_block", amount: 2 }, { item: "tenebris:ascendant_ingot", amount: 4 }, { item: "tenebris:ascendant_rune", amount: 4 } ] },
       "tenebris:ascendant_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:ascendant_block", amount: 1 }, { item: "tenebris:ascendant_sheet", amount: 4 }, { item: "tenebris:ancestral_ingot", amount: 4 }, { item: "tenebris:ascendant_rune", amount: 4 } ] },
 
+      // --- NÍVEL 4: ESOTERIC ---
+      "tenebris:esoteric_ingot": { yield: 1, ingredients: [ { item: "tenebris:ascendant_ingot", amount: 1 }, { item: "malum:eldritch_spirit", amount: 8 }, { item: "malum:wicked_spirit", amount: 8 }, { item: "malum:arcane_spirit", amount: 8 } ] },
+      "tenebris:powdered_esoteric_ingot": { yield: 2, returnItem: "tenebris:esoteric_ingot", ingredients: [{ item: "tenebris:esoteric_ingot", amount: 1 }] },
+      "tenebris:esoteric_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_esoteric_ingot", amount: 1 }] },
+      "tenebris:esoteric_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:ascendant_upgrade_smithing_template", amount: 1 }, { item: "tenebris:esoteric_block", amount: 2 }, { item: "tenebris:esoteric_ingot", amount: 4 }, { item: "tenebris:esoteric_rune", amount: 4 } ] },
+      "tenebris:esoteric_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:esoteric_block", amount: 1 }, { item: "tenebris:esoteric_sheet", amount: 4 }, { item: "tenebris:ascendant_ingot", amount: 4 }, { item: "tenebris:esoteric_rune", amount: 4 } ] },
+
+      // --- NÍVEL 5: MITHRIL (Corrigido para a base exata do Tenebris) ---
+      "tenebris:mithril_ingot": { 
+        yield: 1, 
+        ingredients: [ 
+          { item: "tenebris:esoteric_ingot", amount: 1 },
+          { item: "minecraft:netherite_ingot", amount: 1 }, 
+          { item: "fluid:harmonic_essence", amount: 1000 }, 
+          { item: "fluid:pure_vitae", amount: 1000 }, 
+          { item: "tenebris:ascendant_paper", amount: 1, type: "durability" } 
+        ] 
+      },
+      "tenebris:powdered_mithril_ingot": { yield: 2, returnItem: "tenebris:mithril_ingot", ingredients: [{ item: "tenebris:mithril_ingot", amount: 1 }] },
+      "tenebris:mithril_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_mithril_ingot", amount: 1 }] },
+      "tenebris:mithril_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:esoteric_upgrade_smithing_template", amount: 1 }, { item: "tenebris:mithril_block", amount: 2 }, { item: "tenebris:mithril_ingot", amount: 4 }, { item: "tenebris:mithril_rune", amount: 4 } ] },
+      "tenebris:mithril_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:mithril_block", amount: 1 }, { item: "tenebris:mithril_sheet", amount: 4 }, { item: "tenebris:esoteric_ingot", amount: 4 }, { item: "tenebris:mithril_rune", amount: 4 } ] },
+
       // --- NÍVEL EXTRA ---
       "tenebris:golden_ascendance_sheet": { yield: 1, ingredients: [{ item: "tenebris:golden_ascendance_ingot", amount: 1 }] },
       "tenebris:golden_ascendance_ingot": { yield: 9, ingredients: [{ item: "tenebris:golden_ascendance_block", amount: 1 }] },
@@ -326,11 +383,12 @@
     };
 
     /* =========================================
-       3. LÓGICA RECURSIVA E GERAÇÃO DA ÁRVORE
+       3. LÓGICA RECURSIVA COM ESTOQUE (SOBRAS)
        ========================================= */
     function calculateMaterials(targetId, targetAmount, craftArcaneEnabled, templateMethod) {
       let baseMaterials = {};
       let toolUsages = {};
+      let leftovers = {}; 
 
       function addObj(obj, key, amount) {
         if (!obj[key]) obj[key] = 0;
@@ -340,21 +398,31 @@
       const chanceAncestral = parseInt(document.getElementById('sliderAncestral').value) / 100;
       const chanceCrushing = parseInt(document.getElementById('sliderCrushing').value) / 100;
 
-      // Função principal modificada para retornar Nós de Árvore (Tree Nodes)
       function resolveRecipe(originalItemId, amountNeeded) {
         if (amountNeeded <= 0) return null;
 
         let finalId = originalItemId.replace('_hard', '').replace('_easy', '');
-        let node = { id: finalId, amount: amountNeeded, children: [], isBase: false, isTool: false };
+        
+        // 1. Tentar pegar as sobras primeiro! (Economia Inteligente)
+        let available = leftovers[finalId] || 0;
+        let takenFromLeftovers = Math.min(amountNeeded, available);
+        leftovers[finalId] -= takenFromLeftovers; 
+        
+        let remainingNeeded = amountNeeded - takenFromLeftovers;
 
-        // Regra do Arcane Ingot (Para e vira material base)
+        let node = { id: finalId, amount: amountNeeded, crafted: 0, fromLeftovers: takenFromLeftovers, children: [], isBase: false, isTool: false };
+
+        if (remainingNeeded <= 0) {
+           return node;
+        }
+
         if (originalItemId === "tenebris:arcane_ingot" && !craftArcaneEnabled) {
-          addObj(baseMaterials, originalItemId, amountNeeded);
+          addObj(baseMaterials, originalItemId, remainingNeeded);
           node.isBase = true;
+          node.crafted = remainingNeeded;
           return node;
         }
 
-        // Interceptador de Rotas de Templates
         let itemId = originalItemId;
         if (itemId.endsWith('_upgrade_smithing_template')) {
           itemId = itemId + '_' + templateMethod;
@@ -363,69 +431,56 @@
         if (recipes[itemId]) {
           const recipe = recipes[itemId];
 
-          // ----- SUCESSO ANCESTRAL -----
+          let expectedYield = recipe.yield || 1;
+
           if (recipe.isAncestral) {
              const nuggetChance = 1 - chanceAncestral;
-             const expectedYieldInIngots = chanceAncestral * 1 + nuggetChance * (3 / 9);
-             const craftRuns = Math.ceil(amountNeeded / expectedYieldInIngots);
-             
-             recipe.ingredients.forEach(ing => {
-                if (ing.type === "durability") {
-                  addObj(toolUsages, ing.item, ing.amount * craftRuns);
-                  node.children.push({ id: ing.item, amount: ing.amount * craftRuns, children: [], isTool: true });
-                } else {
-                  let childNode = resolveRecipe(ing.item, ing.amount * craftRuns);
-                  if (childNode) node.children.push(childNode);
-                }
-             });
-             return node;
+             expectedYield = chanceAncestral * 1 + nuggetChance * (3 / 9);
           }
 
-          const craftRuns = Math.ceil(amountNeeded / recipe.yield);
+          const craftRuns = Math.ceil(remainingNeeded / expectedYield);
+          const totalCrafted = craftRuns * expectedYield;
 
-          // ----- CRUSHING RETURN -----
+          node.crafted = totalCrafted;
+          
+          const surplus = totalCrafted - remainingNeeded;
+          leftovers[finalId] = (leftovers[finalId] || 0) + surplus;
+
+          let expectedReturn = 0;
           if (recipe.returnItem) {
-             const expectedReturn = craftRuns * chanceCrushing;
-
-             recipe.ingredients.forEach(ing => {
-                if (ing.item === recipe.returnItem) {
-                   const netAmount = (ing.amount * craftRuns) - expectedReturn;
-                   if (netAmount > 0) {
-                     let childNode = resolveRecipe(ing.item, netAmount);
-                     if(childNode) node.children.push(childNode);
-                   }
-                } else if (ing.type === "durability") {
-                   addObj(toolUsages, ing.item, ing.amount * craftRuns);
-                   node.children.push({ id: ing.item, amount: ing.amount * craftRuns, children: [], isTool: true });
-                } else {
-                   let childNode = resolveRecipe(ing.item, ing.amount * craftRuns);
-                   if (childNode) node.children.push(childNode);
-                }
-             });
-             return node;
+             expectedReturn = craftRuns * chanceCrushing;
           }
 
-          // Puxar ingredientes padrão
           recipe.ingredients.forEach(ing => {
-            if (ing.type === "durability") {
-              addObj(toolUsages, ing.item, ing.amount * craftRuns);
-              node.children.push({ id: ing.item, amount: ing.amount * craftRuns, children: [], isTool: true });
-            } else {
-              let childNode = resolveRecipe(ing.item, ing.amount * craftRuns);
-              if (childNode) node.children.push(childNode);
-            }
+             let ingAmount = ing.amount * craftRuns;
+
+             if (recipe.returnItem && ing.item === recipe.returnItem) {
+                ingAmount = Math.max(0, ingAmount - expectedReturn);
+             }
+
+             if (ingAmount > 0) {
+                 if (ing.type === "durability") {
+                    addObj(toolUsages, ing.item, ingAmount);
+                    // Ferramentas são nós folha especiais na árvore
+                    node.children.push({ id: ing.item, amount: ingAmount, crafted: 0, fromLeftovers: 0, children: [], isBase: false, isTool: true });
+                 } else {
+                    let childNode = resolveRecipe(ing.item, ingAmount);
+                    if (childNode) node.children.push(childNode);
+                 }
+             }
           });
         } else {
           // Chegou na base
-          addObj(baseMaterials, finalId, amountNeeded);
+          addObj(baseMaterials, finalId, remainingNeeded);
           node.isBase = true;
+          node.crafted = remainingNeeded;
         }
 
         return node;
       }
 
       const craftingTree = resolveRecipe(targetId, targetAmount);
-      return { baseMaterials, toolUsages, craftingTree };
+      return { baseMaterials, toolUsages, craftingTree, leftovers };
     }
 
     /* =========================================
@@ -439,36 +494,39 @@
         .join(' ');
     }
 
-    // Função Recursiva para desenhar o HTML das Pastas (Árvore)
     function renderTreeHTML(node) {
       if (!node) return '';
       
       const name = formatName(node.id);
-      const amount = Math.ceil(node.amount);
+      const amount = parseFloat(node.amount.toFixed(2));
       
-      // É uma folha final (base) ou ferramenta? Renderiza apenas uma div simples
-      if (node.isBase || node.isTool || !node.children || node.children.length === 0) {
-        let icon = node.isTool ? 'hammer' : 'corner-down-right';
-        let colorClass = node.isTool ? 'text-amber-500' : 'text-stone-500';
+      const leftoversBadge = node.fromLeftovers > 0 
+        ? `<span class="text-[9px] bg-blue-900/40 text-blue-400 px-1.5 py-0.5 rounded ml-2 border border-blue-800/50 flex-shrink-0">Reaproveitou ${parseFloat(node.fromLeftovers.toFixed(2))} da sobra</span>` 
+        : '';
+      
+      if (node.isBase || node.isTool || node.crafted === 0 || !node.children || node.children.length === 0) {
+        let icon = node.isTool ? 'hammer' : (node.crafted === 0 ? 'check-circle' : 'corner-down-right');
+        let colorClass = node.isTool ? 'text-amber-500' : (node.crafted === 0 ? 'text-blue-500' : 'text-stone-500');
         return `
-          <div class="flex items-center gap-2 py-1.5 pl-2 hover:bg-stone-900/50 rounded transition-colors">
-            <i data-lucide="${icon}" class="w-3 h-3 ${colorClass}"></i>
+          <div class="flex items-center gap-2 py-1.5 pl-2 hover:bg-stone-900/50 rounded transition-colors flex-wrap">
+            <i data-lucide="${icon}" class="w-3 h-3 flex-shrink-0 ${colorClass}"></i>
             <span class="font-mono font-bold text-white text-xs">${amount}x</span>
-            <span class="text-xs text-stone-400">${name}</span>
+            <span class="text-xs text-stone-400 truncate">${name}</span>
+            ${leftoversBadge}
           </div>
         `;
       }
 
-      // Tem filhos? Renderiza uma tag <details> (Pasta expansível)
       let childrenHTML = node.children.map(child => renderTreeHTML(child)).join('');
       
       return `
         <details class="group relative" open>
-          <summary class="flex items-center gap-2 cursor-pointer py-1.5 px-2 hover:bg-stone-900/50 rounded transition-colors select-none">
-            <i data-lucide="chevron-right" class="chevron-icon w-3 h-3 text-purple-500 transition-transform duration-200"></i>
+          <summary class="flex items-center gap-2 cursor-pointer py-1.5 px-2 hover:bg-stone-900/50 rounded transition-colors select-none flex-wrap">
+            <i data-lucide="chevron-right" class="chevron-icon w-3 h-3 flex-shrink-0 text-purple-500 transition-transform duration-200"></i>
             <span class="font-mono font-black text-purple-400 text-xs">${amount}x</span>
-            <span class="text-xs font-semibold text-stone-200">${name}</span>
-            <span class="text-[9px] uppercase tracking-widest text-stone-600 ml-2">(Pasta de Produção)</span>
+            <span class="text-xs font-semibold text-stone-200 truncate">${name}</span>
+            ${leftoversBadge}
+            <span class="text-[9px] uppercase tracking-widest text-stone-600 ml-2 hidden sm:inline">(Pasta)</span>
           </summary>
           <div class="relative pl-6 pb-1">
             <div class="tree-line"></div>
@@ -495,7 +553,6 @@
       const craftArcane = elCraftArcane.checked;
       const templateMode = elTemplateMethod.checked ? 'easy' : 'hard';
 
-      // Atualiza Toggles
       if(craftArcane) {
         document.getElementById('switchBg').classList.replace('bg-stone-800', 'bg-purple-600');
         document.getElementById('switchBg').classList.replace('border-stone-700', 'border-purple-500');
@@ -516,10 +573,8 @@
         document.getElementById('switchTmplDot').classList.remove('translate-x-4');
       }
 
-      // Roda a matemática que agora devolve a Árvore também
-      const { baseMaterials, toolUsages, craftingTree } = calculateMaterials(target, amount, craftArcane, templateMode);
+      const { baseMaterials, toolUsages, craftingTree, leftovers } = calculateMaterials(target, amount, craftArcane, templateMode);
 
-      // Renderiza Base Materials
       const gridMaterials = document.getElementById('materialsGrid');
       gridMaterials.innerHTML = '';
       if (Object.keys(baseMaterials).length === 0) {
@@ -537,16 +592,34 @@
         `);
       }
 
-      // Renderiza Árvore (O novo recurso!)
+      const gridLeftovers = document.getElementById('leftoversGrid');
+      gridLeftovers.innerHTML = '';
+      let hasLeftovers = false;
+      for (const [id, qty] of Object.entries(leftovers)) {
+        const finalQty = Math.floor(qty); 
+        if (finalQty > 0) {
+          hasLeftovers = true;
+          const name = formatName(id);
+          gridLeftovers.insertAdjacentHTML('beforeend', `
+            <div class="bg-stone-950/80 border border-stone-800 rounded-xl p-3 flex flex-col justify-between group">
+              <span class="text-[10px] text-stone-400 group-hover:text-blue-400 transition-colors uppercase tracking-wider mb-2">${name}</span>
+              <span class="text-xl font-black font-mono text-blue-400">${finalQty}</span>
+            </div>
+          `);
+        }
+      }
+      if (!hasLeftovers) {
+        gridLeftovers.innerHTML = '<div class="text-stone-500 text-xs col-span-full">A automação consumiu 100% dos recursos em lote. Nenhuma sobra gerada.</div>';
+      }
+
       const treeContainer = document.getElementById('treeContainer');
       if (craftingTree && craftingTree.children && craftingTree.children.length > 0) {
         treeContainer.innerHTML = renderTreeHTML(craftingTree);
       } else {
-        treeContainer.innerHTML = '<div class="text-stone-500 text-xs">Este item é básico e não possui etapas de produção detalhadas.</div>';
+        treeContainer.innerHTML = '<div class="text-stone-500 text-xs">Este item é básico ou foi totalmente suprido pelas sobras.</div>';
       }
-      lucide.createIcons(); // Recarrega ícones da árvore recém-criada
+      lucide.createIcons();
 
-      // Renderiza Ferramentas
       const gridTools = document.getElementById('toolsGrid');
       gridTools.innerHTML = '';
       if (Object.keys(toolUsages).length === 0) {
@@ -584,7 +657,6 @@
       }
     }
 
-    // Listeners
     elTargetItem.addEventListener('change', updateUI);
     elTargetAmount.addEventListener('input', updateUI);
     elCraftArcane.addEventListener('change', updateUI);
