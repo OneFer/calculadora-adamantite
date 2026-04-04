@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora Tenebris - V8 (Correção Mithril)</title>
+  <title>Calculadora Tenebris - V9 (UX Árvore de Produção)</title>
   
   <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -93,7 +93,7 @@
           <i data-lucide="cpu" class="text-purple-500 w-6 h-6"></i>
           <h1 class="text-2xl font-black tracking-tighter text-white uppercase">Tenebris <span class="text-purple-500">Logistics</span></h1>
         </div>
-        <p class="text-sm font-semibold tracking-widest text-stone-400 uppercase">Módulo de Processamento (V8 - Mithril Tier)</p>
+        <p class="text-sm font-semibold tracking-widest text-stone-400 uppercase">Módulo de Processamento (V9 - Interface Otimizada)</p>
       </div>
       
       <!-- Status do Sistema -->
@@ -252,9 +252,15 @@
 
         <!-- Árvore de Produção (Pastas) -->
         <div class="bg-stone-900/40 border border-stone-800 p-6 rounded-[2rem] shadow-2xl backdrop-blur-xl">
-          <h2 class="text-[10px] font-black uppercase tracking-widest text-purple-400 mb-4 flex items-center gap-2">
-            <i data-lucide="network" class="w-4 h-4"></i> Árvore de Produção (Passo a Passo)
-          </h2>
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-[10px] font-black uppercase tracking-widest text-purple-400 flex items-center gap-2">
+              <i data-lucide="network" class="w-4 h-4"></i> Árvore de Produção
+            </h2>
+            <div class="flex gap-2">
+              <button onclick="toggleAllFolders(true)" class="text-[9px] font-bold uppercase tracking-widest bg-stone-900 border border-stone-700 hover:border-purple-500 hover:text-purple-400 text-stone-400 px-2 py-1 rounded transition-all">Expandir</button>
+              <button onclick="toggleAllFolders(false)" class="text-[9px] font-bold uppercase tracking-widest bg-stone-900 border border-stone-700 hover:border-purple-500 hover:text-purple-400 text-stone-400 px-2 py-1 rounded transition-all">Recolher</button>
+            </div>
+          </div>
           
           <div id="treeContainer" class="bg-stone-950/80 border border-stone-800 rounded-xl p-4 overflow-hidden">
             <!-- A árvore será renderizada aqui -->
@@ -300,6 +306,10 @@
       "malum:soul_stained_steel_plating": { yield: 1, ingredients: [ { item: "malum:soul_stained_steel_nugget", amount: 4 }, { item: "malum:soul_stained_steel_ingot", amount: 1 } ] },
       "malum:soul_stained_steel_nugget": { yield: 9, ingredients: [ { item: "malum:soul_stained_steel_ingot", amount: 1 } ] },
       "malum:soul_stained_steel_ingot": { yield: 1, ingredients: [ { item: "malum:wicked_spirit", amount: 3 }, { item: "malum:earthen_spirit", amount: 1 }, { item: "malum:arcane_spirit", amount: 1 }, { item: "minecraft:iron_ingot", amount: 1 }, { item: "malum:processed_soulstone", amount: 4 } ] },
+
+      // --- VANILLA COMPONENTES ---
+      "minecraft:gold_block": { yield: 1, ingredients: [{ item: "minecraft:gold_ingot", amount: 9 }] },
+      "minecraft:netherite_ingot": { yield: 1, ingredients: [{ item: "minecraft:netherite_scrap", amount: 4 }, { item: "minecraft:gold_ingot", amount: 4 }] },
 
       // --- FLUIDOS ---
       "fluid:harmonic_essence": { yield: 1000, ingredients: [{ item: "tenebris:powdered_arcane_ingot", amount: 8 }] },
@@ -352,13 +362,13 @@
       "tenebris:ascendant_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:ascendant_block", amount: 1 }, { item: "tenebris:ascendant_sheet", amount: 4 }, { item: "tenebris:ancestral_ingot", amount: 4 }, { item: "tenebris:ascendant_rune", amount: 4 } ] },
 
       // --- NÍVEL 4: ESOTERIC ---
-      "tenebris:esoteric_ingot": { yield: 1, ingredients: [ { item: "tenebris:ascendant_ingot", amount: 1 }, { item: "malum:eldritch_spirit", amount: 8 }, { item: "malum:wicked_spirit", amount: 8 }, { item: "malum:arcane_spirit", amount: 8 } ] },
+      "tenebris:esoteric_ingot": { yield: 1, ingredients: [ { item: "tenebris:golden_ascendance_sheet", amount: 1 }, { item: "malum:eldritch_spirit", amount: 8 }, { item: "malum:wicked_spirit", amount: 8 }, { item: "malum:arcane_spirit", amount: 8 } ] },
       "tenebris:powdered_esoteric_ingot": { yield: 2, returnItem: "tenebris:esoteric_ingot", ingredients: [{ item: "tenebris:esoteric_ingot", amount: 1 }] },
       "tenebris:esoteric_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_esoteric_ingot", amount: 1 }] },
       "tenebris:esoteric_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:ascendant_upgrade_smithing_template", amount: 1 }, { item: "tenebris:esoteric_block", amount: 2 }, { item: "tenebris:esoteric_ingot", amount: 4 }, { item: "tenebris:esoteric_rune", amount: 4 } ] },
       "tenebris:esoteric_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:esoteric_block", amount: 1 }, { item: "tenebris:esoteric_sheet", amount: 4 }, { item: "tenebris:ascendant_ingot", amount: 4 }, { item: "tenebris:esoteric_rune", amount: 4 } ] },
 
-      // --- NÍVEL 5: MITHRIL (Corrigido para a base exata do Tenebris) ---
+      // --- NÍVEL 5: MITHRIL ---
       "tenebris:mithril_ingot": { 
         yield: 1, 
         ingredients: [ 
@@ -484,7 +494,7 @@
     }
 
     /* =========================================
-       4. UI E RENDERIZAÇÃO
+       4. UI E RENDERIZAÇÃO E CONTROLES DE ÁRVORE
        ========================================= */
     function formatName(id) {
       let parts = id.split(':');
@@ -494,6 +504,7 @@
         .join(' ');
     }
 
+    // Função Recursiva para desenhar o HTML das Pastas (Árvore) - AGORA VEM FECHADA SEM O ATRIBUTO "open"
     function renderTreeHTML(node) {
       if (!node) return '';
       
@@ -520,7 +531,7 @@
       let childrenHTML = node.children.map(child => renderTreeHTML(child)).join('');
       
       return `
-        <details class="group relative" open>
+        <details class="group relative"> <!-- Removido atributo 'open' para nascer fechado -->
           <summary class="flex items-center gap-2 cursor-pointer py-1.5 px-2 hover:bg-stone-900/50 rounded transition-colors select-none flex-wrap">
             <i data-lucide="chevron-right" class="chevron-icon w-3 h-3 flex-shrink-0 text-purple-500 transition-transform duration-200"></i>
             <span class="font-mono font-black text-purple-400 text-xs">${amount}x</span>
@@ -534,6 +545,18 @@
           </div>
         </details>
       `;
+    }
+
+    // Função para Expandir/Recolher todas as pastas
+    function toggleAllFolders(forceOpen) {
+      const detailsElements = document.querySelectorAll('#treeContainer details');
+      detailsElements.forEach(details => {
+        if (forceOpen) {
+          details.setAttribute('open', '');
+        } else {
+          details.removeAttribute('open');
+        }
+      });
     }
 
     const elTargetItem = document.getElementById('targetItem');
