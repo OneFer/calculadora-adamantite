@@ -3,17 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora Tenebris - V22 (Bugfix Adamantite Templates)</title>
+  <title>Calculadora Tenebris - V17 (Deep Malum Tier)</title>
   
-  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Ícones (Lucide) -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
@@ -83,20 +80,17 @@
 </head>
 <body class="min-h-screen p-4 md:p-8 flex justify-center items-start">
 
-  <!-- Container Principal -->
   <div class="w-full max-w-5xl space-y-8">
     
-    <!-- Cabeçalho -->
     <header class="bg-stone-900/40 border border-stone-800 p-6 rounded-[2rem] shadow-2xl backdrop-blur-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
         <div class="flex items-center gap-3 mb-1">
           <i data-lucide="cpu" class="text-purple-500 w-6 h-6"></i>
           <h1 class="text-2xl font-black tracking-tighter text-white uppercase">Tenebris <span class="text-purple-500">Logistics</span></h1>
         </div>
-        <p class="text-sm font-semibold tracking-widest text-stone-400 uppercase">Módulo de Processamento (V22 - Correções Finais)</p>
+        <p class="text-sm font-semibold tracking-widest text-stone-400 uppercase">Módulo de Processamento (V17 - Correções Deep Malum)</p>
       </div>
       
-      <!-- Status do Sistema -->
       <div class="flex items-center gap-2 bg-stone-950 px-4 py-2 rounded-full border border-stone-800">
         <span class="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-400 mt-0.5">
           Matriz Ativa
@@ -107,14 +101,12 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       
-      <!-- Painel de Controles -->
       <aside class="space-y-6">
         <div class="bg-stone-900/40 border border-stone-800 p-6 rounded-[2rem] shadow-2xl backdrop-blur-xl hover:border-purple-500/40 transition-all duration-500">
           <h2 class="text-[10px] font-black uppercase tracking-widest text-purple-400 mb-6 flex items-center gap-2">
             <i data-lucide="settings-2" class="w-4 h-4"></i> Parâmetros
           </h2>
 
-          <!-- Seleção de Item -->
           <div class="mb-5">
             <label class="block text-xs font-semibold text-stone-400 mb-2 uppercase tracking-wider">Item Alvo</label>
             <select id="targetItem" class="w-full bg-stone-950 border border-stone-700 rounded-xl p-3 text-white font-mono text-sm focus:outline-none focus:border-purple-500 transition-colors">
@@ -172,13 +164,11 @@
             </select>
           </div>
 
-          <!-- Quantidade -->
           <div class="mb-6">
             <label class="block text-xs font-semibold text-stone-400 mb-2 uppercase tracking-wider">Quantidade</label>
             <input type="number" id="targetAmount" value="1" min="1" class="w-full bg-stone-950 border border-stone-700 rounded-xl p-3 text-white font-mono text-lg focus:outline-none focus:border-purple-500 transition-colors">
           </div>
 
-          <!-- Switch: Duplicar vs Craftar (Templates) -->
           <label class="flex items-center justify-between cursor-pointer group mb-4">
             <div class="pr-3">
               <div class="text-[11px] font-bold text-white group-hover:text-purple-400 transition-colors uppercase tracking-wider">Duplicar Templates?</div>
@@ -191,7 +181,6 @@
             </div>
           </label>
 
-          <!-- Switch: Produzir Arcane Ingot -->
           <label class="flex items-center justify-between cursor-pointer group mb-6">
             <div class="pr-3">
               <div class="text-[11px] font-bold text-white group-hover:text-purple-400 transition-colors uppercase tracking-wider">Sintetizar Arcane Ingot?</div>
@@ -206,12 +195,10 @@
 
           <hr class="border-stone-800 mb-6">
 
-          <!-- SLIDERS DE SORTE / RNG -->
           <h3 class="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-4 flex items-center gap-2">
             <i data-lucide="sliders-horizontal" class="w-4 h-4"></i> Rendimento & Sorte (RNG)
           </h3>
           
-          <!-- Slider Ancestral -->
           <div class="mb-6">
             <div class="flex justify-between items-end mb-2">
               <label class="block text-[10px] font-semibold text-stone-400 uppercase tracking-wider">Sucesso Ancestral</label>
@@ -221,7 +208,6 @@
             <p class="text-[9px] text-stone-500 mt-2 uppercase tracking-wide">Desvio das falhas (Nuggets) na montagem.</p>
           </div>
 
-          <!-- Slider Crushing -->
           <div class="mb-2">
             <div class="flex justify-between items-end mb-2">
               <label class="block text-[10px] font-semibold text-stone-400 uppercase tracking-wider">Retorno Crushing (Pó)</label>
@@ -234,21 +220,17 @@
         </div>
       </aside>
 
-      <!-- Painel de Resultados -->
       <main class="lg:col-span-2 space-y-6">
         
-        <!-- Materiais Base (Total Bruto) -->
         <div class="bg-stone-900/40 border border-stone-800 p-6 rounded-[2rem] shadow-2xl backdrop-blur-xl">
           <h2 class="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-4 flex items-center gap-2">
             <i data-lucide="box" class="w-4 h-4"></i> Total Bruto de Recursos (Farm)
           </h2>
           
           <div id="materialsGrid" class="grid grid-cols-2 md:grid-cols-3 gap-3">
-            <!-- Items inseridos via JS -->
-          </div>
+            </div>
         </div>
 
-        <!-- Painel de SOBRAS (Excedentes da Automação) -->
         <div class="bg-stone-900/40 border border-stone-800 p-6 rounded-[2rem] shadow-2xl backdrop-blur-xl">
           <h2 class="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-4 flex items-center gap-2">
             <i data-lucide="archive" class="w-4 h-4"></i> Estoque Excedente (Sobras a Guardar)
@@ -256,11 +238,9 @@
           <p class="text-[10px] text-stone-500 mb-4 uppercase">Itens produzidos em lote que não foram totalmente gastos e ficarão no baú.</p>
           
           <div id="leftoversGrid" class="grid grid-cols-2 md:grid-cols-3 gap-3">
-            <!-- Items inseridos via JS -->
-          </div>
+            </div>
         </div>
 
-        <!-- Árvore de Produção (Pastas) -->
         <div class="bg-stone-900/40 border border-stone-800 p-6 rounded-[2rem] shadow-2xl backdrop-blur-xl">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-[10px] font-black uppercase tracking-widest text-purple-400 flex items-center gap-2">
@@ -273,19 +253,16 @@
           </div>
           
           <div id="treeContainer" class="bg-stone-950/80 border border-stone-800 rounded-xl p-4 overflow-hidden">
-            <!-- A árvore será renderizada aqui -->
-          </div>
+            </div>
         </div>
 
-        <!-- Ferramentas e Durabilidade -->
         <div class="bg-stone-900/40 border border-stone-800 p-6 rounded-[2rem] shadow-2xl backdrop-blur-xl">
           <h2 class="text-[10px] font-black uppercase tracking-widest text-amber-500 mb-4 flex items-center gap-2">
             <i data-lucide="hammer" class="w-4 h-4"></i> Desgaste de Ferramentas
           </h2>
           
           <div id="toolsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-             <!-- Ferramentas inseridas via JS -->
-          </div>
+             </div>
         </div>
 
       </main>
@@ -318,49 +295,138 @@
       "malum:soul_stained_steel_nugget": { yield: 9, ingredients: [ { item: "malum:soul_stained_steel_ingot", amount: 1 } ] },
       "malum:soul_stained_steel_ingot": { yield: 1, ingredients: [ { item: "malum:wicked_spirit", amount: 3 }, { item: "malum:earthen_spirit", amount: 1 }, { item: "malum:arcane_spirit", amount: 1 }, { item: "minecraft:iron_ingot", amount: 1 }, { item: "malum:processed_soulstone", amount: 4 } ] },
 
-      // --- NOVOS COMPONENTES MALUM / DEEP TIER ---
       "malum:hallowed_gold_ingot": { yield: 1, ingredients: [ { item: "minecraft:gold_ingot", amount: 1 }, { item: "minecraft:quartz", amount: 4 }, { item: "malum:sacred_spirit", amount: 2 }, { item: "malum:arcane_spirit", amount: 1 } ] },
       "malum:fused_consciousness": { yield: 1, ingredients: [ { item: "minecraft:iron_block", amount: 1 }, { item: "malum:sacred_spirit", amount: 4 }, { item: "malum:wicked_spirit", amount: 4 }, { item: "malum:arcane_spirit", amount: 4 }, { item: "malum:eldritch_spirit", amount: 4 }, { item: "malum:aerial_spirit", amount: 4 }, { item: "malum:aqueous_spirit", amount: 4 }, { item: "malum:earthen_spirit", amount: 4 }, { item: "malum:infernal_spirit", amount: 4 } ] },
-      "tenebris:corrupted_fragment": { yield: 1, ingredients: [ { item: "tenebris:mithril_ingot", amount: 4 }, { item: "minecraft:netherite_scrap", amount: 4 }, { item: "tenebris:arcane_pebble", amount: 1 } ] },
+      "malum:block_of_cthonic_gold": { yield: 1, ingredients: [{ item: "malum:cthonic_gold", amount: 9 }] },
 
       // --- VANILLA COMPONENTES ---
       "minecraft:gold_block": { yield: 1, ingredients: [{ item: "minecraft:gold_ingot", amount: 9 }] },
       "minecraft:netherite_ingot": { yield: 1, ingredients: [{ item: "minecraft:netherite_scrap", amount: 4 }, { item: "minecraft:gold_ingot", amount: 4 }] },
       "minecraft:iron_block": { yield: 1, ingredients: [{ item: "minecraft:iron_ingot", amount: 9 }] },
-      "malum:block_of_cthonic_gold": { yield: 1, ingredients: [{ item: "malum:cthonic_gold", amount: 9 }] },
 
-      // --- FLUIDOS (Adaptado conforme regra do mod Tenebris) ---
+      // --- FLUIDOS & SAPS ---
       "fluid:harmonic_essence": { yield: 1000, ingredients: [{ item: "fluid:pure_vitae", amount: 500 }, { item: "fluid:cursed_vitae", amount: 500 }, { item: "tenebris:thermal_monitor_mechanism", amount: 2, type: "durability" }] },
-      "fluid:pure_vitae": { yield: 1000, ingredients: [{ item: "tenebris:powdered_arcane_ingot", amount: 8 }, { item: "malum:runic_sap", amount: 2 }] },
-      "fluid:cursed_vitae": { yield: 1000, ingredients: [{ item: "tenebris:powdered_arcane_ingot", amount: 8 }, { item: "malum:cursed_sap", amount: 2 }] },
-      // fluid:arcane_essence foi removido intencionalmente para não poluir os materiais básicos.
+      "fluid:pure_vitae": { yield: 1000, ingredients: [{ item: "tenebris:powdered_arcane_ingot", amount: 8 }, { item: "tenebris:condensed_runic_sap", amount: 1 }] },
+      "fluid:cursed_vitae": { yield: 1000, ingredients: [{ item: "tenebris:powdered_arcane_ingot", amount: 8 }, { item: "tenebris:condensed_cursed_sap", amount: 1 }] },
+      "tenebris:condensed_runic_sap": { yield: 2, ingredients: [{ item: "malum:revealed_runewood_log", amount: 1 }] },
+      "tenebris:condensed_cursed_sap": { yield: 2, ingredients: [{ item: "malum:revealed_soulwood_log", amount: 1 }] },
 
-      // --- BLOCOS E PEPITAS GERAIS ---
+      // --- TABLETS & PLAIN WOOD ---
+      "tenebris:arcane_tablet": { yield: 2, ingredients: [{ item: "tenebris:arcane_tree_log", amount: 2 }, { item: "malum:processed_soulstone", amount: 8 }, { item: "tenebris:arcane_tree_planks", amount: 4 }, { item: "malum:hex_ash", amount: 2 }, { item: "malum:aerial_spirit", amount: 8 }, { item: "malum:aqueous_spirit", amount: 8 }, { item: "malum:earthen_spirit", amount: 8 }, { item: "malum:infernal_spirit", amount: 8 }, { item: "malum:eldritch_spirit", amount: 2 }] },
+      "tenebris:arcane_tree_planks": { yield: 4, ingredients: [{ item: "tenebris:arcane_tree_log", amount: 1 }] },
+
+      // --- NÍVEL 1: ARCANE ---
+      "tenebris:arcane_ingot": { yield: 1, ingredients: [ { item: "minecraft:iron_ingot", amount: 1 }, { item: "tenebris:thermal_monitor_mechanism", amount: 1, type: "durability" } ] },
+      "tenebris:powdered_arcane_ingot": { yield: 2, returnItem: "tenebris:arcane_ingot", ingredients: [{ item: "tenebris:arcane_ingot", amount: 1 }] },
+      "tenebris:arcane_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_arcane_ingot", amount: 1 }] },
       "tenebris:arcane_block": { yield: 1, ingredients: [{ item: "tenebris:arcane_ingot", amount: 9 }] },
       "tenebris:arcane_nugget": { yield: 9, ingredients: [{ item: "tenebris:arcane_ingot", amount: 1 }] },
+      "tenebris:arcane_rune": { yield: 1, ingredients: [{ item: "tenebris:arcane_nugget", amount: 6 }, { item: "malum:tainted_rock_tablet", amount: 1 }] },
+
+      "tenebris:arcane_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "minecraft:netherite_upgrade_smithing_template", amount: 1 }, { item: "tenebris:arcane_block", amount: 1 }, { item: "tenebris:arcane_ingot", amount: 4 }, { item: "tenebris:arcane_rune", amount: 4 } ] },
+      "tenebris:arcane_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:arcane_block", amount: 1 }, { item: "tenebris:arcane_sheet", amount: 4 }, { item: "minecraft:netherrack", amount: 4 }, { item: "tenebris:arcane_rune", amount: 4 } ] },
+
+      // --- NÍVEL 2: ANCESTRAL ---
+      "tenebris:ancestral_ingot": { isAncestral: true, ingredients: [ { item: "tenebris:arcane_ingot", amount: 1 }, { item: "malum:infernal_spirit", amount: 4 }, { item: "malum:arcane_spirit", amount: 4 }, { item: "malum:earthen_spirit", amount: 4 } ] },
+      "tenebris:powdered_ancestral_ingot": { yield: 2, returnItem: "tenebris:ancestral_ingot", ingredients: [{ item: "tenebris:ancestral_ingot", amount: 1 }] },
+      "tenebris:ancestral_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_ancestral_ingot", amount: 1 }] },
       "tenebris:ancestral_block": { yield: 1, ingredients: [{ item: "tenebris:ancestral_ingot", amount: 9 }] },
       "tenebris:ancestral_nugget": { yield: 9, ingredients: [{ item: "tenebris:ancestral_ingot", amount: 1 }] },
+      "tenebris:ancestral_rune": { yield: 1, ingredients: [{ item: "tenebris:ancestral_nugget", amount: 6 }, { item: "malum:tainted_rock_tablet", amount: 1 }] },
+
+      "tenebris:hollow_ancestral_block": { yield: 1, ingredients: [{ item: "tenebris:ancestral_block", amount: 1 }] },
+      "tenebris:purified_ancestral_block": { yield: 1, ingredients: [ { item: "tenebris:hollow_ancestral_block", amount: 1 }, { item: "malum:soul_stained_steel_plating", amount: 24 }, { item: "malum:null_slate", amount: 16 }, { item: "malum:void_salts", amount: 16 }, { item: "malum:block_of_cthonic_gold", amount: 1 }, { item: "malum:eldritch_spirit", amount: 24 }, { item: "malum:arcane_spirit", amount: 24 }, { item: "malum:infernal_spirit", amount: 16 }, { item: "malum:sacred_spirit", amount: 16 }, { item: "malum:earthen_spirit", amount: 16 } ] },
+
+      "tenebris:ancestral_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:arcane_upgrade_smithing_template", amount: 1 }, { item: "tenebris:ancestral_rune", amount: 12 }, { item: "malum:processed_soulstone", amount: 10 }, { item: "tenebris:ancestral_block", amount: 2 }, { item: "tenebris:ancestral_ingot", amount: 4 }, { item: "malum:arcane_spirit", amount: 16 }, { item: "malum:earthen_spirit", amount: 8 }, { item: "malum:infernal_spirit", amount: 8 } ] },
+      "tenebris:ancestral_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:ancestral_block", amount: 1 }, { item: "tenebris:ancestral_sheet", amount: 4 }, { item: "tenebris:arcane_ingot", amount: 4 }, { item: "tenebris:ancestral_rune", amount: 4 } ] },
+
+      // --- NÍVEL 3: ASCENDANT ---
+      "tenebris:ascendant_block": { yield: 1, ingredients: [ { item: "tenebris:purified_ancestral_block", amount: 1 }, { item: "minecraft:blaze_powder", amount: 8 }, { item: "malum:null_slate", amount: 16 } ] },
+      "tenebris:ascendant_ingot": { yield: 9, ingredients: [{ item: "tenebris:ascendant_block", amount: 1 }] },
+      "tenebris:powdered_ascendant_ingot": { yield: 2, returnItem: "tenebris:ascendant_ingot", ingredients: [{ item: "tenebris:ascendant_ingot", amount: 1 }] },
+      "tenebris:ascendant_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_ascendant_ingot", amount: 1 }] },
       "tenebris:ascendant_nugget": { yield: 9, ingredients: [{ item: "tenebris:ascendant_ingot", amount: 1 }] },
+      "tenebris:ascendant_rune": { yield: 1, ingredients: [{ item: "tenebris:ascendant_nugget", amount: 6 }, { item: "malum:void_tablet", amount: 1 }] },
+      "tenebris:ascendant_paper": { yield: 1, ingredients: [{ item: "tenebris:powdered_ascendant_ingot", amount: 1 }, { item: "create:sand_paper", amount: 1 }] },
+
+      "tenebris:ascendant_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:ancestral_upgrade_smithing_template", amount: 1 }, { item: "tenebris:ascendant_block", amount: 2 }, { item: "tenebris:ascendant_ingot", amount: 4 }, { item: "tenebris:ascendant_rune", amount: 4 } ] },
+      "tenebris:ascendant_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:ascendant_block", amount: 1 }, { item: "tenebris:ascendant_sheet", amount: 4 }, { item: "tenebris:ancestral_ingot", amount: 4 }, { item: "tenebris:ascendant_rune", amount: 4 } ] },
+
+      // --- NÍVEL 4: ESOTERIC ---
+      "tenebris:golden_ascendance_block": { yield: 1, ingredients: [{ item: "minecraft:gold_block", amount: 8 }, { item: "tenebris:ascendant_block", amount: 1 }] },
+      "tenebris:golden_ascendance_ingot": { yield: 9, ingredients: [{ item: "tenebris:golden_ascendance_block", amount: 1 }] },
+      "tenebris:golden_ascendance_sheet": { yield: 1, ingredients: [{ item: "tenebris:golden_ascendance_ingot", amount: 1 }] },
+      "tenebris:golden_brilliance": { yield: 1, ingredients: [{ item: "tenebris:golden_ascendance_sheet", amount: 1 }, { item: "create:experience_block", amount: 4 }] },
+      
+      "tenebris:esoteric_cast": { yield: 1, ingredients: [{ item: "tenebris:golden_brilliance", amount: 1 }] }, 
+      "tenebris:rough_esoteric_metal": { yield: 1, ingredients: [{ item: "tenebris:esoteric_cast", amount: 1 }] },
+      "tenebris:polished_esoteric_metal": { yield: 1, ingredients: [{ item: "tenebris:rough_esoteric_metal", amount: 1 }, { item: "tenebris:ascendant_paper", amount: 1, type: "durability" }] },
+      "tenebris:heated_esoteric_metal": { yield: 1, ingredients: [{ item: "tenebris:polished_esoteric_metal", amount: 1 }, { item: "tenebris:thermal_monitor_mechanism", amount: 1, type: "durability" }] },
+      "tenebris:esoteric_ingot": { yield: 1, ingredients: [{ item: "tenebris:heated_esoteric_metal", amount: 1 }] },
+
+      "tenebris:powdered_esoteric_ingot": { yield: 2, returnItem: "tenebris:esoteric_ingot", ingredients: [{ item: "tenebris:esoteric_ingot", amount: 1 }] },
+      "tenebris:esoteric_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_esoteric_ingot", amount: 1 }] },
       "tenebris:esoteric_block": { yield: 1, ingredients: [{ item: "tenebris:esoteric_ingot", amount: 9 }] },
       "tenebris:esoteric_nugget": { yield: 9, ingredients: [{ item: "tenebris:esoteric_ingot", amount: 1 }] },
+      "tenebris:esoteric_rune": { yield: 1, ingredients: [{ item: "tenebris:esoteric_nugget", amount: 6 }, { item: "tenebris:arcane_tablet", amount: 1 }] },
+
+      "tenebris:esoteric_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:ascendant_upgrade_smithing_template", amount: 1 }, { item: "tenebris:esoteric_block", amount: 2 }, { item: "tenebris:esoteric_ingot", amount: 4 }, { item: "tenebris:esoteric_rune", amount: 4 } ] },
+      "tenebris:esoteric_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:esoteric_block", amount: 1 }, { item: "tenebris:esoteric_sheet", amount: 4 }, { item: "tenebris:ascendant_ingot", amount: 4 }, { item: "tenebris:esoteric_rune", amount: 4 } ] },
+
+      // --- NÍVEL 5: MITHRIL ---
+      "tenebris:mithril_alloy": { yield: 1, ingredients: [{ item: "tenebris:esoteric_ingot", amount: 1 }, { item: "minecraft:netherite_ingot", amount: 1 }] },
+      "tenebris:mithril_matter": { yield: 1, ingredients: [{ item: "tenebris:mithril_alloy", amount: 1 }, { item: "fluid:harmonic_essence", amount: 500 }] },
+      "tenebris:rough_mithril_metal": { yield: 1, ingredients: [{ item: "tenebris:mithril_matter", amount: 1 }, { item: "fluid:pure_vitae", amount: 10 }] },
+      "tenebris:polished_mithril_metal": { yield: 1, ingredients: [{ item: "tenebris:rough_mithril_metal", amount: 1 }, { item: "tenebris:ascendant_paper", amount: 1, type: "durability" }] },
+      "tenebris:mithril_ingot": { yield: 1, ingredients: [{ item: "tenebris:polished_mithril_metal", amount: 1 }, { item: "fluid:pure_vitae", amount: 1500 }] },
+      
+      "tenebris:powdered_mithril_ingot": { yield: 2, returnItem: "tenebris:mithril_ingot", ingredients: [{ item: "tenebris:mithril_ingot", amount: 1 }] },
+      "tenebris:mithril_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_mithril_ingot", amount: 1 }] },
       "tenebris:mithril_block": { yield: 1, ingredients: [{ item: "tenebris:mithril_ingot", amount: 9 }] },
       "tenebris:mithril_nugget": { yield: 9, ingredients: [{ item: "tenebris:mithril_ingot", amount: 1 }] },
-      "tenebris:adamantite_nugget": { yield: 9, ingredients: [{ item: "tenebris:adamantite_ingot", amount: 1 }] },
-
-      // --- RUNAS & TABLETS ---
-      "tenebris:arcane_tree_planks": { yield: 4, ingredients: [{ item: "tenebris:arcane_tree_log", amount: 1 }] },
-      "tenebris:arcane_tablet": { yield: 2, ingredients: [{ item: "tenebris:arcane_tree_log", amount: 2 }, { item: "malum:processed_soulstone", amount: 8 }, { item: "tenebris:arcane_tree_planks", amount: 4 }, { item: "malum:hex_ash", amount: 2 }, { item: "malum:aerial_spirit", amount: 8 }, { item: "malum:aqueous_spirit", amount: 8 }, { item: "malum:earthen_spirit", amount: 8 }, { item: "malum:infernal_spirit", amount: 8 }, { item: "malum:eldritch_spirit", amount: 2 }] },
-      "tenebris:arcane_rune": { yield: 1, ingredients: [{ item: "tenebris:arcane_nugget", amount: 6 }, { item: "malum:tainted_rock_tablet", amount: 1 }] },
-      "tenebris:ancestral_rune": { yield: 1, ingredients: [{ item: "tenebris:ancestral_nugget", amount: 6 }, { item: "malum:tainted_rock_tablet", amount: 1 }] },
-      "tenebris:ascendant_rune": { yield: 1, ingredients: [{ item: "tenebris:ascendant_nugget", amount: 6 }, { item: "malum:void_tablet", amount: 1 }] },
-      "tenebris:esoteric_rune": { yield: 1, ingredients: [{ item: "tenebris:esoteric_nugget", amount: 6 }, { item: "tenebris:arcane_tablet", amount: 1 }] },
       "tenebris:mithril_rune": { yield: 1, ingredients: [{ item: "tenebris:mithril_nugget", amount: 6 }, { item: "tenebris:arcane_tablet", amount: 1 }] },
+
+      "tenebris:mithril_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:esoteric_upgrade_smithing_template", amount: 1 }, { item: "tenebris:mithril_block", amount: 2 }, { item: "tenebris:mithril_ingot", amount: 4 }, { item: "tenebris:mithril_rune", amount: 4 } ] },
+      "tenebris:mithril_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:mithril_block", amount: 1 }, { item: "tenebris:mithril_sheet", amount: 4 }, { item: "tenebris:esoteric_ingot", amount: 4 }, { item: "tenebris:mithril_rune", amount: 4 } ] },
+
+      // --- NÍVEL 6: ADAMANTITE ---
+      "tenebris:adamantite_paste": { yield: 1, ingredients: [ { item: "tenebris:powdered_mithril_ingot", amount: 1 }, { item: "fluid:harmonic_essence", amount: 500 } ] },
+      "tenebris:compacted_adamantite": { yield: 4, ingredients: [ { item: "tenebris:adamantite_paste", amount: 1 } ] },
+      "tenebris:adamantite_crystal": { yield: 1, ingredients: [ { item: "tenebris:compacted_adamantite", amount: 4 } ] },
+      "tenebris:adamantite_shard": { yield: 4, ingredients: [ { item: "tenebris:adamantite_crystal", amount: 1 } ] },
+      "tenebris:adamantite_ingot": { yield: 1, ingredients: [ { item: "tenebris:adamantite_shard", amount: 4 }, { item: "tenebris:sentient_obelisk", amount: 16, type: "durability" } ] },
+      "tenebris:powdered_adamantite_ingot": { yield: 2, returnItem: "tenebris:adamantite_ingot", ingredients: [{ item: "tenebris:adamantite_ingot", amount: 1 }] },
+      "tenebris:adamantite_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_adamantite_ingot", amount: 1 }] },
+      "tenebris:adamantite_block": { yield: 1, ingredients: [ { item: "malum:block_of_cthonic_gold", amount: 4 }, { item: "tenebris:adamantite_ingot", amount: 9 }, { item: "tenebris:adamantite_shard", amount: 12 } ] },
+      "tenebris:adamantite_nugget": { yield: 9, ingredients: [{ item: "tenebris:adamantite_ingot", amount: 1 }] },
       "tenebris:adamantite_rune": { yield: 1, ingredients: [{ item: "tenebris:adamantite_nugget", amount: 6 }, { item: "tenebris:arcane_tablet", amount: 1 }] },
 
-      // --- FERRAMENTAS E EQUIPAMENTOS (Custo de Reposição) ---
-      "tenebris:ascendant_paper": { yield: 1, ingredients: [{ item: "tenebris:powdered_ascendant_ingot", amount: 1 }, { item: "create:sand_paper", amount: 1 }] },
+      "tenebris:adamantite_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:mithril_upgrade_smithing_template", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 6 }, { item: "tenebris:adamantite_ingot", amount: 8 }, { item: "tenebris:adamantite_shard", amount: 5 }, { item: "tenebris:adamantite_rune", amount: 5 }, { item: "tenebris:harmonic_crystalheart", amount: 2 } ] },
+      "tenebris:adamantite_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:adamantite_block", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 4 }, { item: "tenebris:mithril_ingot", amount: 4 }, { item: "tenebris:adamantite_rune", amount: 4 } ] },
+
+      // --- TEMPLATES DE ELITE (ARMOR) ---
+      "tenebris:magic_adamantite_armor_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:magic_mithril_boots", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 8 }, { item: "tenebris:adamantite_shard", amount: 10 }, { item: "tenebris:adamantite_ingot", amount: 12 }, { item: "tenebris:stellarforge_component", amount: 2 }, { item: "tenebris:adamantite_spirit_block", amount: 2 }, { item: "tenebris:adamantite_component", amount: 2 }, { item: "tenebris:adamantite_heart", amount: 1 }, { item: "tenebris:soulbound_adamantite_ingot", amount: 6 }, { item: "tenebris:adamantite_upgrade_smithing_template", amount: 1 } ] },
+      "tenebris:magic_adamantite_armor_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:adamantite_upgrade_smithing_template", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 4 }, { item: "tenebris:mithril_ingot", amount: 4 }, { item: "tenebris:adamantite_rune", amount: 4 } ] },
+      
+      "tenebris:real_adamantite_armor_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:real_mithril_boots", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 8 }, { item: "tenebris:adamantite_shard", amount: 10 }, { item: "tenebris:adamantite_ingot", amount: 12 }, { item: "tenebris:stellarforge_component", amount: 2 }, { item: "tenebris:adamantite_spirit_block", amount: 2 }, { item: "tenebris:adamantite_component", amount: 2 }, { item: "tenebris:adamantite_heart", amount: 1 }, { item: "tenebris:soulbound_adamantite_ingot", amount: 6 }, { item: "tenebris:adamantite_upgrade_smithing_template", amount: 1 } ] },
+      "tenebris:real_adamantite_armor_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:adamantite_upgrade_smithing_template", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 4 }, { item: "tenebris:mithril_ingot", amount: 4 }, { item: "tenebris:adamantite_rune", amount: 4 } ] },
+
+      // --- CADEIA DE ARMADURAS (BOOTS ROTA) ---
+      "tenebris:magic_mithril_boots": { yield: 1, ingredients: [ { item: "tenebris:magic_esoteric_boots", amount: 1 }, { item: "tenebris:mithril_upgrade_smithing_template", amount: 1 }, { item: "tenebris:mithril_rune", amount: 6 }, { item: "tenebris:mithril_ingot", amount: 1 } ] },
+      "tenebris:magic_esoteric_boots": { yield: 1, ingredients: [ { item: "tenebris:ascendant_boots", amount: 1 }, { item: "tenebris:esoteric_upgrade_smithing_template", amount: 1 }, { item: "tenebris:esoteric_rune", amount: 4 }, { item: "tenebris:esoteric_ingot", amount: 1 } ] },
+      "tenebris:real_mithril_boots": { yield: 1, ingredients: [ { item: "tenebris:real_esoteric_boots", amount: 1 }, { item: "tenebris:mithril_upgrade_smithing_template", amount: 1 }, { item: "tenebris:mithril_rune", amount: 6 }, { item: "tenebris:mithril_ingot", amount: 1 } ] },
+      "tenebris:real_esoteric_boots": { yield: 1, ingredients: [ { item: "tenebris:ascendant_boots", amount: 1 }, { item: "tenebris:esoteric_upgrade_smithing_template", amount: 1 }, { item: "tenebris:esoteric_rune", amount: 4 }, { item: "tenebris:esoteric_ingot", amount: 1 } ] },
+
+      // --- SUB-COMPONENTES DE ELITE ---
+      "tenebris:stellarforge_component": { yield: 1, ingredients: [{ item: "tenebris:adamantite_ingot", amount: 6 }, { item: "tenebris:adamantite_shard", amount: 4 }, { item: "tenebris:luminous_core", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 2 }] },
+      "tenebris:adamantite_spirit_block": { yield: 1, ingredients: [{ item: "tenebris:adamantite_block", amount: 1 }, { item: "malum:arcane_spirit", amount: 64 }, { item: "malum:eldritch_spirit", amount: 48 }, { item: "malum:wicked_spirit", amount: 64 }] },
+      "tenebris:adamantite_component": { yield: 1, ingredients: [{ item: "tenebris:adamantite_ingot", amount: 1 }, { item: "tenebris:adamantite_cell", amount: 1 }, { item: "tenebris:harmonic_ingot_sheet", amount: 4 }, { item: "tenebris:adamantite_shard", amount: 3 }] },
+      "tenebris:adamantite_heart": { yield: 1, ingredients: [{ item: "tenebris:adamantite_ingot", amount: 5 }, { item: "tenebris:adamantite_shard", amount: 1 }, { item: "tenebris:adamantite_cell", amount: 2 }, { item: "tenebris:charged_core", amount: 1 }] },
+      "tenebris:soulbound_adamantite_ingot": { yield: 1, ingredients: [{ item: "tenebris:adamantite_ingot", amount: 1 }, { item: "malum:arcane_spirit", amount: 64 }, { item: "malum:eldritch_spirit", amount: 48 }, { item: "malum:wicked_spirit", amount: 64 }] },
+      "tenebris:adamantite_cell": { yield: 1, ingredients: [{ item: "tenebris:adamantite_shard", amount: 4 }, { item: "tenebris:ethereal_conduit", amount: 1 }, { item: "irons_spellbooks:mana_upgrade_orb", amount: 4 }] },
+
+      // --- FERRAMENTAS E CADEIA DE MANUTENÇÃO ---
       "tenebris:thermal_monitor_mechanism": { yield: 1, ingredients: [{ item: "tenebris:golden_ascendance_sheet", amount: 1 }, { item: "create:brass_ingot", amount: 5 }, { item: "minecraft:obsidian", amount: 5 }, { item: "minecraft:redstone", amount: 5 }] },
-      "tenebris:golden_brilliance": { yield: 1, ingredients: [{ item: "tenebris:golden_ascendance_sheet", amount: 1 }, { item: "create:experience_block", amount: 4 }] },
       "tenebris:oblivion_core": { yield: 1, ingredients: [{ item: "malum:fused_consciousness", amount: 1 }, { item: "malum:processed_soulstone", amount: 2 }, { item: "tenebris:powdered_esoteric_ingot", amount: 2 }, { item: "malum:hallowed_gold_ingot", amount: 4 }, { item: "malum:aerial_spirit", amount: 16 }, { item: "malum:aqueous_spirit", amount: 16 }, { item: "malum:sacred_spirit", amount: 16 }, { item: "malum:eldritch_spirit", amount: 16 }] },
       "tenebris:etherium_core": { yield: 1, ingredients: [{ item: "tenebris:mithril_ingot", amount: 4 }, { item: "minecraft:netherite_scrap", amount: 4 }, { item: "tenebris:arcane_pebble", amount: 1 }] },
       "tenebris:ethereal_husk": { yield: 2, ingredients: [{ item: "tenebris:mithril_ingot", amount: 1 }, { item: "tenebris:oblivion_core", amount: 1 }, { item: "tenebris:thermal_monitor_mechanism", amount: 4, type: "durability" }] },
@@ -369,92 +435,13 @@
       "tenebris:luminous_core": { yield: 1, ingredients: [{ item: "tenebris:oblivion_core", amount: 1 }, { item: "tenebris:adamantite_shard", amount: 1 }, { item: "tenebris:golden_brilliance", amount: 1 }, { item: "tenebris:harmonic_ingot", amount: 1 }, { item: "malum:aerial_spirit", amount: 16 }, { item: "malum:aqueous_spirit", amount: 16 }, { item: "malum:sacred_spirit", amount: 16 }, { item: "malum:arcane_spirit", amount: 16 }] },
       "tenebris:ethereal_catalyst": { yield: 1, ingredients: [{ item: "tenebris:mithril_sheet", amount: 1 }, { item: "tenebris:adamantite_shard", amount: 3 }, { item: "tenebris:arcane_pebble", amount: 3 }, { item: "tenebris:mithril_nugget", amount: 3 }] },
       "tenebris:ethereal_conduit": { yield: 1, ingredients: [{ item: "tenebris:ethereal_catalyst", amount: 1 }] },
-      "tenebris:adamantite_cell": { yield: 1, ingredients: [{ item: "tenebris:adamantite_shard", amount: 4 }, { item: "tenebris:ethereal_conduit", amount: 1 }, { item: "irons_spellbooks:mana_upgrade_orb", amount: 4 }] },
       "tenebris:sentient_obelisk": { yield: 1, ingredients: [{ item: "tenebris:charged_core", amount: 1 }, { item: "tenebris:adamantite_shard", amount: 1 }, { item: "tenebris:adamantite_cell", amount: 1 }, { item: "tenebris:harmonic_ingot", amount: 1 }, { item: "tenebris:luminous_core", amount: 1 }] },
-
-      // --- NÍVEL 1: ARCANE ---
-      "tenebris:arcane_ingot": { yield: 1, ingredients: [ { item: "minecraft:iron_ingot", amount: 1 }, { item: "tenebris:thermal_monitor_mechanism", amount: 1, type: "durability" } ] },
-      "tenebris:powdered_arcane_ingot": { yield: 2, returnItem: "tenebris:arcane_ingot", ingredients: [{ item: "tenebris:arcane_ingot", amount: 1 }] },
-      "tenebris:arcane_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_arcane_ingot", amount: 1 }] },
-      "tenebris:arcane_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "minecraft:netherite_upgrade_smithing_template", amount: 1 }, { item: "tenebris:arcane_block", amount: 1 }, { item: "tenebris:arcane_ingot", amount: 4 }, { item: "tenebris:arcane_rune", amount: 4 } ] },
-      "tenebris:arcane_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:arcane_block", amount: 1 }, { item: "tenebris:arcane_sheet", amount: 4 }, { item: "minecraft:netherrack", amount: 4 }, { item: "tenebris:arcane_rune", amount: 4 } ] },
-
-      // --- NÍVEL 2: ANCESTRAL ---
-      "tenebris:ancestral_ingot": { isAncestral: true, ingredients: [ { item: "tenebris:arcane_ingot", amount: 1 }, { item: "malum:infernal_spirit", amount: 4 }, { item: "malum:arcane_spirit", amount: 4 }, { item: "malum:earthen_spirit", amount: 4 } ] },
-      "tenebris:powdered_ancestral_ingot": { yield: 2, returnItem: "tenebris:ancestral_ingot", ingredients: [{ item: "tenebris:ancestral_ingot", amount: 1 }] },
-      "tenebris:ancestral_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_ancestral_ingot", amount: 1 }] },
-      "tenebris:ancestral_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:arcane_upgrade_smithing_template", amount: 1 }, { item: "tenebris:ancestral_rune", amount: 12 }, { item: "malum:processed_soulstone", amount: 10 }, { item: "tenebris:ancestral_block", amount: 2 }, { item: "tenebris:ancestral_ingot", amount: 4 }, { item: "malum:arcane_spirit", amount: 16 }, { item: "malum:earthen_spirit", amount: 8 }, { item: "malum:infernal_spirit", amount: 8 } ] },
-      "tenebris:ancestral_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:ancestral_block", amount: 1 }, { item: "tenebris:ancestral_sheet", amount: 4 }, { item: "tenebris:arcane_ingot", amount: 4 }, { item: "tenebris:ancestral_rune", amount: 4 } ] },
-
-      // --- NÍVEL 3: ASCENDANT ---
-      "tenebris:hollow_ancestral_block": { yield: 1, ingredients: [{ item: "tenebris:ancestral_block", amount: 1 }] },
-      "tenebris:purified_ancestral_block": { yield: 1, ingredients: [ { item: "tenebris:hollow_ancestral_block", amount: 1 }, { item: "malum:soul_stained_steel_plating", amount: 24 }, { item: "malum:null_slate", amount: 16 }, { item: "malum:void_salts", amount: 16 }, { item: "malum:block_of_cthonic_gold", amount: 1 }, { item: "malum:eldritch_spirit", amount: 24 }, { item: "malum:arcane_spirit", amount: 24 }, { item: "malum:infernal_spirit", amount: 16 }, { item: "malum:sacred_spirit", amount: 16 }, { item: "malum:earthen_spirit", amount: 16 } ] },
-      "tenebris:ascendant_block": { yield: 1, ingredients: [ { item: "tenebris:purified_ancestral_block", amount: 1 }, { item: "minecraft:blaze_powder", amount: 8 }, { item: "malum:null_slate", amount: 16 } ] },
-      "tenebris:ascendant_ingot": { yield: 9, ingredients: [{ item: "tenebris:ascendant_block", amount: 1 }] },
-      "tenebris:powdered_ascendant_ingot": { yield: 2, returnItem: "tenebris:ascendant_ingot", ingredients: [{ item: "tenebris:ascendant_ingot", amount: 1 }] },
-      "tenebris:ascendant_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_ascendant_ingot", amount: 1 }] },
-      "tenebris:ascendant_paper": { yield: 1, ingredients: [{ item: "tenebris:powdered_ascendant_ingot", amount: 1 }, { item: "create:sand_paper", amount: 1 }] },
-      "tenebris:ascendant_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:ancestral_upgrade_smithing_template", amount: 1 }, { item: "tenebris:ascendant_block", amount: 2 }, { item: "tenebris:ascendant_ingot", amount: 4 }, { item: "tenebris:ascendant_rune", amount: 4 } ] },
-      "tenebris:ascendant_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:ascendant_block", amount: 1 }, { item: "tenebris:ascendant_sheet", amount: 4 }, { item: "tenebris:ancestral_ingot", amount: 4 }, { item: "tenebris:ascendant_rune", amount: 4 } ] },
-
-      // --- NÍVEL 4: ESOTERIC ---
-      "tenebris:esoteric_ingot": { yield: 1, ingredients: [ { item: "tenebris:golden_ascendance_sheet", amount: 1 }, { item: "malum:eldritch_spirit", amount: 8 }, { item: "malum:wicked_spirit", amount: 8 }, { item: "malum:arcane_spirit", amount: 8 } ] },
-      "tenebris:powdered_esoteric_ingot": { yield: 2, returnItem: "tenebris:esoteric_ingot", ingredients: [{ item: "tenebris:esoteric_ingot", amount: 1 }] },
-      "tenebris:esoteric_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_esoteric_ingot", amount: 1 }] },
-      "tenebris:esoteric_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:ascendant_upgrade_smithing_template", amount: 1 }, { item: "tenebris:esoteric_block", amount: 2 }, { item: "tenebris:esoteric_ingot", amount: 4 }, { item: "tenebris:esoteric_rune", amount: 4 } ] },
-      "tenebris:esoteric_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:esoteric_block", amount: 1 }, { item: "tenebris:esoteric_sheet", amount: 4 }, { item: "tenebris:ascendant_ingot", amount: 4 }, { item: "tenebris:esoteric_rune", amount: 4 } ] },
-
-      // --- NÍVEL 5: MITHRIL ---
-      "tenebris:mithril_ingot": { 
-        yield: 1, 
-        ingredients: [ 
-          { item: "tenebris:esoteric_ingot", amount: 1 },
-          { item: "minecraft:netherite_ingot", amount: 1 }, 
-          { item: "fluid:harmonic_essence", amount: 1000 }, 
-          { item: "fluid:pure_vitae", amount: 1000 }, 
-          { item: "tenebris:ascendant_paper", amount: 1, type: "durability" } 
-        ] 
-      },
-      "tenebris:powdered_mithril_ingot": { yield: 2, returnItem: "tenebris:mithril_ingot", ingredients: [{ item: "tenebris:mithril_ingot", amount: 1 }] },
-      "tenebris:mithril_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_mithril_ingot", amount: 1 }] },
-      "tenebris:mithril_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:esoteric_upgrade_smithing_template", amount: 1 }, { item: "tenebris:mithril_block", amount: 2 }, { item: "tenebris:mithril_ingot", amount: 4 }, { item: "tenebris:mithril_rune", amount: 4 } ] },
-      "tenebris:mithril_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:mithril_block", amount: 1 }, { item: "tenebris:mithril_sheet", amount: 4 }, { item: "tenebris:esoteric_ingot", amount: 4 }, { item: "tenebris:mithril_rune", amount: 4 } ] },
-
-      // --- NÍVEL 6: ADAMANTITE E ARMADURAS ---
-      "tenebris:adamantite_paste": { yield: 1, ingredients: [ { item: "tenebris:powdered_mithril_ingot", amount: 1 }, { item: "fluid:harmonic_essence", amount: 500 } ] },
-      "tenebris:compacted_adamantite": { yield: 4, ingredients: [ { item: "tenebris:adamantite_paste", amount: 1 } ] },
-      "tenebris:adamantite_crystal": { yield: 1, ingredients: [ { item: "tenebris:compacted_adamantite", amount: 4 } ] },
-      "tenebris:adamantite_shard": { yield: 4, ingredients: [ { item: "tenebris:adamantite_crystal", amount: 1 } ] },
-      "tenebris:powdered_adamantite_ingot": { yield: 2, returnItem: "tenebris:adamantite_ingot", ingredients: [{ item: "tenebris:adamantite_ingot", amount: 1 }] },
-      "tenebris:adamantite_sheet": { yield: 1, ingredients: [{ item: "tenebris:powdered_adamantite_ingot", amount: 1 }] },
-      "tenebris:adamantite_ingot": { yield: 1, ingredients: [ { item: "tenebris:adamantite_shard", amount: 4 }, { item: "tenebris:sentient_obelisk", amount: 16, type: "durability" } ] },
-      "tenebris:adamantite_block": { yield: 1, ingredients: [ { item: "malum:block_of_cthonic_gold", amount: 4 }, { item: "tenebris:adamantite_ingot", amount: 9 }, { item: "tenebris:adamantite_shard", amount: 12 } ] },
-
-      "tenebris:magic_mithril_boots": { yield: 1, ingredients: [ { item: "tenebris:magic_esoteric_boots", amount: 1 }, { item: "tenebris:mithril_upgrade_smithing_template", amount: 1 }, { item: "tenebris:mithril_rune", amount: 6 }, { item: "tenebris:mithril_ingot", amount: 1 } ] },
-      "tenebris:magic_esoteric_boots": { yield: 1, ingredients: [ { item: "tenebris:ascendant_boots", amount: 1 }, { item: "tenebris:esoteric_upgrade_smithing_template", amount: 1 }, { item: "tenebris:esoteric_rune", amount: 4 }, { item: "tenebris:esoteric_ingot", amount: 1 } ] },
-      "tenebris:real_mithril_boots": { yield: 1, ingredients: [ { item: "tenebris:real_esoteric_boots", amount: 1 }, { item: "tenebris:mithril_upgrade_smithing_template", amount: 1 }, { item: "tenebris:mithril_rune", amount: 6 }, { item: "tenebris:mithril_ingot", amount: 1 } ] },
-      "tenebris:real_esoteric_boots": { yield: 1, ingredients: [ { item: "tenebris:ascendant_boots", amount: 1 }, { item: "tenebris:esoteric_upgrade_smithing_template", amount: 1 }, { item: "tenebris:esoteric_rune", amount: 4 }, { item: "tenebris:esoteric_ingot", amount: 1 } ] },
-
-      "tenebris:stellarforge_component": { yield: 1, ingredients: [{ item: "tenebris:adamantite_ingot", amount: 6 }, { item: "tenebris:adamantite_shard", amount: 4 }, { item: "tenebris:luminous_core", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 2 }] },
-      "tenebris:adamantite_spirit_block": { yield: 1, ingredients: [{ item: "tenebris:adamantite_block", amount: 1 }, { item: "malum:arcane_spirit", amount: 64 }, { item: "malum:eldritch_spirit", amount: 48 }, { item: "malum:wicked_spirit", amount: 64 }] },
-      "tenebris:adamantite_component": { yield: 1, ingredients: [{ item: "tenebris:adamantite_ingot", amount: 1 }, { item: "tenebris:adamantite_cell", amount: 1 }, { item: "tenebris:harmonic_ingot_sheet", amount: 4 }, { item: "tenebris:adamantite_shard", amount: 3 }] },
-      "tenebris:adamantite_heart": { yield: 1, ingredients: [{ item: "tenebris:adamantite_ingot", amount: 5 }, { item: "tenebris:adamantite_shard", amount: 1 }, { item: "tenebris:adamantite_cell", amount: 2 }, { item: "tenebris:charged_core", amount: 1 }] },
-      "tenebris:soulbound_adamantite_ingot": { yield: 1, ingredients: [{ item: "tenebris:adamantite_ingot", amount: 1 }, { item: "malum:arcane_spirit", amount: 64 }, { item: "malum:eldritch_spirit", amount: 48 }, { item: "malum:wicked_spirit", amount: 64 }] },
-      "tenebris:adamantite_cell": { yield: 1, ingredients: [{ item: "tenebris:adamantite_shard", amount: 4 }, { item: "tenebris:ethereal_conduit", amount: 1 }, { item: "irons_spellbooks:mana_upgrade_orb", amount: 4 }] },
-
-      "tenebris:adamantite_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:mithril_upgrade_smithing_template", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 6 }, { item: "tenebris:adamantite_ingot", amount: 8 }, { item: "tenebris:adamantite_shard", amount: 5 }, { item: "tenebris:adamantite_rune", amount: 5 }, { item: "tenebris:harmonic_crystalheart", amount: 2 } ] },
-      "tenebris:adamantite_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:adamantite_block", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 4 }, { item: "tenebris:mithril_ingot", amount: 4 }, { item: "tenebris:adamantite_rune", amount: 4 } ] },
-      "tenebris:magic_adamantite_armor_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:magic_mithril_boots", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 8 }, { item: "tenebris:adamantite_shard", amount: 10 }, { item: "tenebris:adamantite_ingot", amount: 12 }, { item: "tenebris:stellarforge_component", amount: 2 }, { item: "tenebris:adamantite_spirit_block", amount: 2 }, { item: "tenebris:adamantite_component", amount: 2 }, { item: "tenebris:adamantite_heart", amount: 1 }, { item: "tenebris:soulbound_adamantite_ingot", amount: 6 }, { item: "tenebris:mithril_upgrade_smithing_template", amount: 1 } ] },
-      "tenebris:magic_adamantite_armor_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:adamantite_block", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 4 }, { item: "tenebris:mithril_ingot", amount: 4 }, { item: "tenebris:adamantite_rune", amount: 4 } ] },
-      "tenebris:real_adamantite_armor_upgrade_smithing_template_hard": { yield: 1, ingredients: [ { item: "tenebris:real_mithril_boots", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 8 }, { item: "tenebris:adamantite_shard", amount: 10 }, { item: "tenebris:adamantite_ingot", amount: 12 }, { item: "tenebris:stellarforge_component", amount: 2 }, { item: "tenebris:adamantite_spirit_block", amount: 2 }, { item: "tenebris:adamantite_component", amount: 2 }, { item: "tenebris:adamantite_heart", amount: 1 }, { item: "tenebris:soulbound_adamantite_ingot", amount: 6 }, { item: "tenebris:mithril_upgrade_smithing_template", amount: 1 } ] },
-      "tenebris:real_adamantite_armor_upgrade_smithing_template_easy": { yield: 1, ingredients: [ { item: "tenebris:adamantite_block", amount: 1 }, { item: "tenebris:adamantite_sheet", amount: 4 }, { item: "tenebris:mithril_ingot", amount: 4 }, { item: "tenebris:adamantite_rune", amount: 4 } ] },
-
-      // --- NÍVEL EXTRA ---
-      "tenebris:golden_ascendance_sheet": { yield: 1, ingredients: [{ item: "tenebris:golden_ascendance_ingot", amount: 1 }] },
-      "tenebris:golden_ascendance_ingot": { yield: 9, ingredients: [{ item: "tenebris:golden_ascendance_block", amount: 1 }] },
-      "tenebris:golden_ascendance_block": { yield: 1, ingredients: [{ item: "minecraft:gold_block", amount: 8 }, { item: "tenebris:ascendant_block", amount: 1 }] },
+      
+      // --- HARMONIC ---
+      "tenebris:harmonic_ingot": { yield: 1, ingredients: [{ item: "minecraft:blaze_powder", amount: 2 }, { item: "tenebris:corrupted_fragment", amount: 1 }, { item: "fluid:harmonic_essence", amount: 30 }] },
+      "tenebris:corrupted_fragment": { yield: 1, ingredients: [{ item: "tenebris:etherium_core", amount: 1 }] },
       "tenebris:harmonic_ingot_sheet": { yield: 1, ingredients: [{ item: "tenebris:harmonic_ingot", amount: 1 }] },
-      "tenebris:harmonic_ingot": { yield: 1, ingredients: [ { item: "minecraft:blaze_powder", amount: 2 }, { item: "tenebris:corrupted_fragment", amount: 1 }, { item: "fluid:harmonic_essence", amount: 30 } ] }
+      "tenebris:harmonic_crystalheart": { yield: 1, ingredients: [ { item: "tenebris:harmonic_ingot", amount: 10 }, { item: "tenebris:adamantite_shard", amount: 7 }, { item: "tenebris:luminous_core", amount: 4 } ] }
     };
 
     /* =========================================
